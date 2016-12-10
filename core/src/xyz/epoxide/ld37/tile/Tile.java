@@ -45,4 +45,9 @@ public class Tile extends Registerable<Tile> {
         this.v2 = v2;
         return this;
     }
+
+    public int getColor () {
+        
+        return color;
+    }
 }
