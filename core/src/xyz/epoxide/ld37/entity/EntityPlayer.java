@@ -7,5 +7,6 @@ public class EntityPlayer extends Entity {
     public EntityPlayer(World world) {
         
         super(world);
+        this.setY(10);
     }
 }

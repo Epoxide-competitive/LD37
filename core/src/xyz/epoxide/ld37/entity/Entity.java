@@ -3,7 +3,9 @@ package xyz.epoxide.ld37.entity;
 import xyz.epoxide.commons.registry.Identifier;
 import xyz.epoxide.commons.registry.NamedRegistry;
 import xyz.epoxide.ld37.LD37;
+import xyz.epoxide.ld37.tile.Tile;
 import xyz.epoxide.ld37.util.CombatSource;
+import xyz.epoxide.ld37.utils.Direction;
 import xyz.epoxide.ld37.world.World;
 
 public class Entity {
@@ -16,6 +18,8 @@ public class Entity {
     private float motionY;
 
     private World world;
+
+    private Direction direction;
 
     private boolean killed;
     private boolean onGround;
@@ -34,7 +38,16 @@ public class Entity {
 
     }
 
-    public void onUpdate() {
+    public void onUpdate(float delta) {
+        if (this.getMotionX() == 0) {
+            this.direction = Direction.UNKNOWN;
+        }
+        if (this.getMotionX() > 0) {
+            this.direction = Direction.RIGHT;
+        } else {
+            this.direction = Direction.LEFT;
+        }
+
         this.setX(this.getX() + this.getMotionX());
         this.setY(this.getY() + this.getMotionY());
         if (this.getMotionX() != 0) {
@@ -45,13 +58,15 @@ public class Entity {
             }
         }
 
-        //TODO Replace with gravity
-        if (this.getMotionY() != 0) {
-            if (this.getMotionY() < 0.00001 && this.getMotionY() > -0.00001) {
-                this.setMotionY(0);
-            } else {
-                this.setMotionY(this.getMotionY() * 0.5f);
-            }
+        Tile tile = this.getWorld().getTileBelow(this, Direction.DOWN);
+        this.onGround = tile != Tile.VOID;
+        if (onGround) {
+            this.setMotionY(0);
+        } else {
+            if (this.getY() > 0)
+                this.setMotionY(-delta);
+            else
+                this.setY(0);
         }
     }
 

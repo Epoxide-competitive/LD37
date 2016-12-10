@@ -14,7 +14,7 @@ import java.util.List;
 
 public class RenderManager {
     public static final float COUNT_WIDTH = 16.0f;
-    public static final float COUNT_HEIGHT = 16.0f;
+    public static final float COUNT_HEIGHT = 14.0f;
     public static float SCALE_WIDTH;
     public static float SCALE_HEIGHT;
 
@@ -30,20 +30,13 @@ public class RenderManager {
         renderTiles(batch, world.getBackgroundTileMap(), delta);
         renderEntity(batch, world.getEntities(), delta);
         renderTiles(batch, world.getForegroundTileMap(), delta);
+        renderParticles(batch, delta);
     }
 
-    private void renderEntity(SpriteBatch batch, List<Entity> entities, float delta) {
-        batch.begin();
-        for (Entity entity : entities) {
-            ClientRegistry.entityRenderMap.get(entity.getClass()).render(batch, entity, 0, 0, delta);
-        }
-        batch.end();
-    }
 
     private void renderTiles(SpriteBatch batch, Tile[][] tileMap, float delta) {
 
         final EntityPlayer entityPlayer = LD37.INSTANCE.entityPlayer;
-
 
         final float x = entityPlayer.getX();
         final float y = entityPlayer.getY();
@@ -64,6 +57,17 @@ public class RenderManager {
             }
         }
         batch.end();
+    }
+    private void renderEntity(SpriteBatch batch, List<Entity> entities, float delta) {
+        batch.begin();
+        for (Entity entity : entities) {
+            ClientRegistry.entityRenderMap.get(entity.getClass()).render(batch, entity, 0, 0, delta);
+        }
+        batch.end();
+    }
+
+    private void renderParticles(SpriteBatch batch, float delta) {
+
     }
 
     public void resize() {

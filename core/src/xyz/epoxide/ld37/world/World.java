@@ -4,6 +4,7 @@ import com.badlogic.gdx.files.FileHandle;
 import xyz.epoxide.ld37.entity.Entity;
 import xyz.epoxide.ld37.tile.Tile;
 import xyz.epoxide.ld37.util.CombatSource;
+import xyz.epoxide.ld37.utils.Direction;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -50,7 +51,7 @@ public class World {
         return foregroundTileMap;
     }
 
-    public void onUpdate() {
+    public void onUpdate(float delta) {
 
         for (Iterator<Entity> iterator = this.entityList.iterator(); iterator.hasNext(); ) {
 
@@ -62,7 +63,7 @@ public class World {
                 iterator.remove();
             } else {
 
-                entity.onUpdate();
+                entity.onUpdate(delta);
             }
         }
     }
@@ -90,9 +91,15 @@ public class World {
         return bytes[start] << 24 | (bytes[start + 1] & 0xFF) << 16 | (bytes[start + 2] & 0xFF) << 8 | (bytes[start + 3] & 0xFF);
     }
 
-    public Tile getTileBelow(int x, int y) {
-        if (y - 1 >= 0) {
-            return backgroundTileMap[x][y - 1];
+    public Tile getTileBelow(Entity entity, Direction dir) {
+        return getTileBelow(entity.getX(), entity.getY(), dir);
+    }
+
+    public Tile getTileBelow(float x, float y, Direction dir) {
+        //TODO Check  Bounds
+        if (x + dir.x >= 0 && y + dir.y >= 0) {
+
+            return backgroundTileMap[Math.round(x) + dir.x][(int) (Math.ceil(y) + dir.y)];
         }
         return Tile.VOID;
     }

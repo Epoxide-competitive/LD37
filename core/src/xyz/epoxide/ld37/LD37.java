@@ -12,9 +12,11 @@ import xyz.epoxide.ld37.client.render.RenderManager;
 import xyz.epoxide.ld37.entity.EntityPlayer;
 import xyz.epoxide.ld37.input.InputHandler;
 import xyz.epoxide.ld37.input.keybind.KeyBind;
+import xyz.epoxide.ld37.utils.Direction;
 import xyz.epoxide.ld37.world.World;
 
 public class LD37 extends ApplicationAdapter {
+    private static final boolean DEBUG = true;
     public static LD37 INSTANCE;
 
     private SpriteBatch batch;
@@ -63,16 +65,21 @@ public class LD37 extends ApplicationAdapter {
 
         this.renderManager.renderGame(this.batch, delta);
 
-        this.batch.begin();
-        this.font.draw(this.batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
-        this.font.draw(this.batch, "GL_RENDERER = " + Gdx.gl.glGetString(GL20.GL_RENDERER), 10, Gdx.graphics.getHeight() - 30);
-        this.font.draw(this.batch, "GL_VENDOR = " + Gdx.gl.glGetString(GL20.GL_VENDOR), 10, Gdx.graphics.getHeight() - 50);
-        this.font.draw(this.batch, "GL_VERSION = " + Gdx.gl.glGetString(GL20.GL_VERSION), 10, Gdx.graphics.getHeight() - 70);
+        if (DEBUG) {
 
-        this.font.draw(this.batch, "Player X = " + LD37.INSTANCE.entityPlayer.getX(), 10, Gdx.graphics.getHeight() - 100);
-        this.font.draw(this.batch, "Player Y = " + LD37.INSTANCE.entityPlayer.getY(), 10, Gdx.graphics.getHeight() - 120);
+            this.batch.begin();
+            this.font.draw(this.batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
+            this.font.draw(this.batch, "GL_RENDERER = " + Gdx.gl.glGetString(GL20.GL_RENDERER), 10, Gdx.graphics.getHeight() - 30);
+            this.font.draw(this.batch, "GL_VENDOR = " + Gdx.gl.glGetString(GL20.GL_VENDOR), 10, Gdx.graphics.getHeight() - 50);
+            this.font.draw(this.batch, "GL_VERSION = " + Gdx.gl.glGetString(GL20.GL_VERSION), 10, Gdx.graphics.getHeight() - 70);
 
-        this.batch.end();
+            this.font.draw(this.batch, "Player X = " + this.entityPlayer.getX(), 10, Gdx.graphics.getHeight() - 100);
+            this.font.draw(this.batch, "Player Y = " + this.entityPlayer.getY(), 10, Gdx.graphics.getHeight() - 120);
+            this.font.draw(this.batch, "Player On Ground = " + this.entityPlayer.onGround(), 10, Gdx.graphics.getHeight() - 140);
+            this.font.draw(this.batch, "Player Tile Below = " + this.world.getTileBelow(this.entityPlayer, Direction.DOWN).getIdentifier().toString(), 10, Gdx.graphics.getHeight() - 160);
+
+            this.batch.end();
+        }
     }
 
     /**
@@ -90,7 +97,7 @@ public class LD37 extends ApplicationAdapter {
 
         if (this.world != null) {
 
-            this.world.onUpdate();
+            this.world.onUpdate(delta);
         }
     }
 
