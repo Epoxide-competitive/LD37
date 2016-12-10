@@ -30,6 +30,7 @@ allprojects {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url "http://maven.epoxide.xyz" }
     }
 }
 
@@ -100,6 +101,7 @@ project(":android") {
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
+        compile "xyz.epoxide.commons:EpoxideCommons:0.0.3"
     }
 }
 
