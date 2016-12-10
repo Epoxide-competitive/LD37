@@ -7,6 +7,8 @@ import xyz.epoxide.ld37.LD37;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.vSyncEnabled = false;
+		config.foregroundFPS = -1;
 		new LwjglApplication(new LD37(), config);
 	}
 }
