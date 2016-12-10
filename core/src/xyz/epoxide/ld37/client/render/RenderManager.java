@@ -1,4 +1,4 @@
-package xyz.epoxide.ld37.client;
+package xyz.epoxide.ld37.client.render;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

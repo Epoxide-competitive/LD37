@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import xyz.epoxide.ld37.client.RenderManager;
+import xyz.epoxide.ld37.client.render.RenderManager;
 import xyz.epoxide.ld37.entity.EntityPlayer;
 import xyz.epoxide.ld37.input.InputHandler;
 import xyz.epoxide.ld37.world.World;
