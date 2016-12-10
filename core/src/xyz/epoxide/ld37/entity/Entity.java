@@ -11,7 +11,7 @@ public class Entity {
     
     private float x;
     private float y;
-    public World world;
+    private World world;
     private boolean killed;
     
     public Entity(World world) {
@@ -81,6 +81,16 @@ public class Entity {
     public Identifier getId () {
         
         return REGISTRY.getIdentifier(this.getClass());
+    }
+    
+    public World getWorld() {
+        
+        return this.world;
+    }
+    
+    public void setWorld(World world) {
+        
+        this.world = world;
     }
     
     public static void registerEntity (String name, Class<? extends Entity> clazz) {
