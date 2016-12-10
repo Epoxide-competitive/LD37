@@ -8,6 +8,7 @@ import com.badlogic.gdx.files.FileHandle;
 
 import xyz.epoxide.ld37.entity.Entity;
 import xyz.epoxide.ld37.tile.Tile;
+import xyz.epoxide.ld37.util.CombatSource;
 
 public class World {
     
@@ -58,7 +59,7 @@ public class World {
             
             if (entity.isDead()) {
                 
-                entity.onEntityKilled();
+                entity.onEntityKilled(CombatSource.STATE_BASED);
                 iterator.remove();
             }
             

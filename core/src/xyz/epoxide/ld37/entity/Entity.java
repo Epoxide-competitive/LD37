@@ -3,6 +3,7 @@ package xyz.epoxide.ld37.entity;
 import xyz.epoxide.commons.registry.Identifier;
 import xyz.epoxide.commons.registry.NamedRegistry;
 import xyz.epoxide.ld37.LD37;
+import xyz.epoxide.ld37.util.CombatSource;
 import xyz.epoxide.ld37.world.World;
 
 public class Entity {
@@ -23,7 +24,7 @@ public class Entity {
         
     }
     
-    public void onEntityKilled () {
+    public void onEntityKilled (CombatSource source) {
         
     }
     
@@ -31,10 +32,10 @@ public class Entity {
         
     }
     
-    public void setDead () {
+    public void setDead (CombatSource source) {
         
         this.killed = true;
-        this.onEntityKilled();
+        this.onEntityKilled(source);
     }
     
     public void revive () {
@@ -83,12 +84,12 @@ public class Entity {
         return REGISTRY.getIdentifier(this.getClass());
     }
     
-    public World getWorld() {
+    public World getWorld () {
         
         return this.world;
     }
     
-    public void setWorld(World world) {
+    public void setWorld (World world) {
         
         this.world = world;
     }
