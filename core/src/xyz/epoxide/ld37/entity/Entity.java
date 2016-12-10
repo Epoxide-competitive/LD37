@@ -9,8 +9,8 @@ public class Entity {
     
     public static final NamedRegistry<Class<? extends Entity>> REGISTRY = new NamedRegistry<Class<? extends Entity>>();
     
-    public float x;
-    public float y;
+    private float x;
+    private float y;
     public World world;
     private boolean killed;
     
@@ -56,6 +56,26 @@ public class Entity {
         
         this.x = x;
         this.y = y;
+    }
+    
+    public float getX () {
+        
+        return this.x;
+    }
+    
+    public float getY () {
+        
+        return this.y;
+    }
+    
+    public double getDistance (Entity entity) {
+        
+        return getDistance(entity.getX(), entity.getY());
+    }
+    
+    public double getDistance (float x, float y) {
+        
+        return Math.sqrt(Math.pow((x - this.getX()), 2) + Math.pow((y - this.getY()), 2));
     }
     
     public Identifier getId () {
