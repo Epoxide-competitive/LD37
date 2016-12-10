@@ -69,6 +69,10 @@ public class LD37 extends ApplicationAdapter {
         this.font.draw(this.batch, "GL_RENDERER = " + Gdx.gl.glGetString(GL20.GL_RENDERER), 10, Gdx.graphics.getHeight() - 30);
         this.font.draw(this.batch, "GL_VENDOR = " + Gdx.gl.glGetString(GL20.GL_VENDOR), 10, Gdx.graphics.getHeight() - 50);
         this.font.draw(this.batch, "GL_VERSION = " + Gdx.gl.glGetString(GL20.GL_VERSION), 10, Gdx.graphics.getHeight() - 70);
+
+        this.font.draw(this.batch, "Player X = " + LD37.INSTANCE.entityPlayer.getX(), 10, Gdx.graphics.getHeight() - 100);
+        this.font.draw(this.batch, "Player Y = " + LD37.INSTANCE.entityPlayer.getY(), 10, Gdx.graphics.getHeight() - 120);
+
         this.batch.end();
     }
     
@@ -81,7 +85,7 @@ public class LD37 extends ApplicationAdapter {
             
             if (key.isPressed()) {
                 
-                key.onUpdate();
+                key.onUpdate(delta);
             }
         }
         

@@ -56,14 +56,13 @@ public class RenderManager {
         renderer.setProjectionMatrix(batch.getProjectionMatrix());
         batch.begin();
         for (int j = -1; j < countHeight + 1; j++) {
-            int yy = (int) (j + y);
-
+            int yy = (int) (j + Math.floor(y));
             for (int i = -1; i < countWidth + 1; i++) {
-                int xx = (int) (i + x);
+                int xx = (int) (i + Math.floor(x));
                 if (xx >= 0 && xx < tileMap.length && yy >= 0 && yy < tileMap[xx].length) {
                     Tile t = tileMap[xx][yy];
                     if (t != Tile.VOID)
-                        batch.draw(TILE_TEXTURE, (i + xRem) * scaleWidth, (j + yRem) * scaleHeight, scaleWidth, scaleHeight, t.u, t.v, t.u2, t.v2);
+                        batch.draw(TILE_TEXTURE, (i - xRem) * scaleWidth, (j - yRem) * scaleHeight, scaleWidth, scaleHeight, t.u, t.v, t.u2, t.v2);
                 }
             }
         }
