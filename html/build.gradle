@@ -7,8 +7,8 @@ gwt {
     minHeapSize="1G"
 
     src = files(file("src/")) // Needs to be in front of "modules" below.
-    modules 'xyz.epoxide.LD37.GdxDefinition'
-    devModules 'xyz.epoxide.LD37.GdxDefinitionSuperdev'
+    modules 'xyz.epoxide.ld37.GdxDefinition'
+    devModules 'xyz.epoxide.ld37.GdxDefinitionSuperdev'
     project.webAppDirName = 'webapp'
 
     compiler {
