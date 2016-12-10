@@ -36,10 +36,6 @@ public class LD37 extends ApplicationAdapter {
         
         Gdx.input.setInputProcessor(new InputHandler());
         
-        Gdx.app.log("GL", "GL_RENDERER = " + Gdx.gl.glGetString(GL20.GL_RENDERER));
-        Gdx.app.log("GL", "GL_VENDOR = " + Gdx.gl.glGetString(GL20.GL_VENDOR));
-        Gdx.app.log("GL", "GL_VERSION = " + Gdx.gl.glGetString(GL20.GL_VERSION));
-        
         for (Controller controller : Controllers.getControllers()) {
             
             Gdx.app.log("INFO", controller.getName());
@@ -71,6 +67,9 @@ public class LD37 extends ApplicationAdapter {
         
         this.batch.begin();
         this.font.draw(this.batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
+        this.font.draw(this.batch, "GL_RENDERER = " + Gdx.gl.glGetString(GL20.GL_RENDERER), 10, Gdx.graphics.getHeight() - 30);
+        this.font.draw(this.batch, "GL_VENDOR = " + Gdx.gl.glGetString(GL20.GL_VENDOR), 10, Gdx.graphics.getHeight() - 50);
+        this.font.draw(this.batch, "GL_VERSION = " + Gdx.gl.glGetString(GL20.GL_VERSION), 10, Gdx.graphics.getHeight() - 70);
         this.batch.end();
     }
     
