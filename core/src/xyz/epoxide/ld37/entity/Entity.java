@@ -12,10 +12,50 @@ public class Entity {
     public float x;
     public float y;
     public World world;
+    private boolean killed;
     
     public Entity(World world) {
         
         this.world = world;
+    }
+    
+    public void onEntitySpawned () {
+        
+    }
+    
+    public void onEntityKilled () {
+        
+    }
+    
+    public void onUpdate () {
+        
+    }
+    
+    public void setDead () {
+        
+        this.killed = true;
+        this.onEntityKilled();
+    }
+    
+    public void revive () {
+        
+        this.killed = false;
+    }
+    
+    public boolean isDead () {
+        
+        return this.killed;
+    }
+    
+    public boolean canSpawnHere (float x, float y) {
+        
+        return true;
+    }
+    
+    public void setPosition (float x, float y) {
+        
+        this.x = x;
+        this.y = y;
     }
     
     public Identifier getId () {

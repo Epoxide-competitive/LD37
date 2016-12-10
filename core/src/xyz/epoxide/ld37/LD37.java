@@ -8,9 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.sun.org.apache.xpath.internal.operations.Gt;
 
-import sun.rmi.runtime.Log;
 import xyz.epoxide.ld37.client.RenderManager;
 import xyz.epoxide.ld37.entity.EntityPlayer;
 import xyz.epoxide.ld37.input.InputHandler;
@@ -78,6 +76,10 @@ public class LD37 extends ApplicationAdapter {
      */
     private void update (float delta) {
         
+        if (this.world != null) {
+            
+            this.world.onUpdate();
+        }
     }
     
     @Override
