@@ -16,6 +16,8 @@ public class KeyBind extends Registerable<KeyBind> {
     private static final KeyBind S = registerKeyBind("s", new KeyMovement(Input.Keys.S));
     private static final KeyBind D = registerKeyBind("d", new KeyMovement(Input.Keys.D));
 
+    private static final KeyBind JUMP = registerKeyBind("jump", new KeyJump());
+
     private int keycode;
 
     public KeyBind(int keycode) {

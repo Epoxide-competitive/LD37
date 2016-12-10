@@ -12,12 +12,18 @@ public class Entity {
 
     private float x;
     private float y;
+    private float motionX;
+    private float motionY;
+
     private World world;
+
     private boolean killed;
+    private boolean onGround;
 
     public Entity(World world) {
 
         this.world = world;
+        this.world.spawnEntity(this, this.getX(), this.getY());
     }
 
     public void onEntitySpawned() {
@@ -29,7 +35,24 @@ public class Entity {
     }
 
     public void onUpdate() {
+        this.setX(this.getX() + this.getMotionX());
+        this.setY(this.getY() + this.getMotionY());
+        if (this.getMotionX() != 0) {
+            if (this.getMotionX() < 0.00001 && this.getMotionX() > -0.00001) {
+                this.setMotionX(0);
+            } else {
+                this.setMotionX(this.getMotionX() * 0.5f);
+            }
+        }
 
+        //TODO Replace with gravity
+        if (this.getMotionY() != 0) {
+            if (this.getMotionY() < 0.00001 && this.getMotionY() > -0.00001) {
+                this.setMotionY(0);
+            } else {
+                this.setMotionY(this.getMotionY() * 0.5f);
+            }
+        }
     }
 
     public void setDead(CombatSource source) {
@@ -48,9 +71,38 @@ public class Entity {
         return this.killed;
     }
 
+    public boolean onGround() {
+        return onGround;
+    }
+
     public boolean canSpawnHere(float x, float y) {
 
         return true;
+    }
+
+    public float getMotionX() {
+        return motionX;
+    }
+
+    public void addMotionX(float motionX) {
+        this.motionX += motionX;
+    }
+
+    public void setMotionX(float motionX) {
+        this.motionX = motionX;
+    }
+
+
+    public float getMotionY() {
+        return motionY;
+    }
+
+    public void setMotionY(float motionY) {
+        this.motionY = motionY;
+    }
+
+    public void addMotionY(float motionY) {
+        this.motionY += motionY;
     }
 
     public void setPosition(float x, float y) {
@@ -59,15 +111,17 @@ public class Entity {
         this.y = y;
     }
 
-    public void addPosition(float x, float y) {
-
-        this.x += x;
-        this.y += y;
+    public void setX(float x) {
+        this.x = x;
     }
 
     public float getX() {
 
         return this.x;
+    }
+
+    public void setY(float y) {
+        this.y = y;
     }
 
     public float getY() {
