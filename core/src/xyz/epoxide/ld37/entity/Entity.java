@@ -9,194 +9,207 @@ import xyz.epoxide.ld37.utils.Direction;
 import xyz.epoxide.ld37.world.World;
 
 public class Entity {
-
+    
     public static final NamedRegistry<Class<? extends Entity>> REGISTRY = new NamedRegistry<Class<? extends Entity>>();
-
+    
     private float x;
     private float y;
     private float motionX;
     private float motionY;
-
+    
     private World world;
-
+    
     private Direction direction;
-
+    
     private boolean killed;
     private boolean onGround;
-
+    
     public Entity(World world) {
-
+        
         this.world = world;
         this.world.spawnEntity(this, this.getX(), this.getY());
     }
-
-    public void onEntitySpawned() {
-
+    
+    public void onEntitySpawned () {
+        
     }
-
-    public void onEntityKilled(CombatSource source) {
-
+    
+    public void onEntityKilled (CombatSource source) {
+        
     }
-
-    public void onUpdate(float delta) {
+    
+    public void onUpdate (float delta) {
+        
         if (this.getMotionX() == 0) {
             this.direction = Direction.UNKNOWN;
         }
         if (this.getMotionX() > 0) {
             this.direction = Direction.RIGHT;
-        } else {
+        }
+        else {
             this.direction = Direction.LEFT;
         }
-
+        
         this.setX(this.getX() + this.getMotionX());
         this.setY(this.getY() + this.getMotionY());
         if (this.getMotionX() != 0) {
             if (this.getMotionX() < 0.00001 && this.getMotionX() > -0.00001) {
                 this.setMotionX(0);
-            } else {
+            }
+            else {
                 this.setMotionX(this.getMotionX() * 0.5f);
             }
         }
-
+        
         Tile tile = this.getWorld().getTileBelow(this, Direction.DOWN);
         this.onGround = tile != Tile.VOID;
         if (onGround) {
             this.setMotionY(0);
-        } else {
+        }
+        else {
             if (this.getY() > 0)
                 this.setMotionY(-delta);
             else
                 this.setY(0);
         }
     }
-
-    public void setDead(CombatSource source) {
-
+    
+    public void setDead (CombatSource source) {
+        
         this.killed = true;
         this.onEntityKilled(source);
     }
-
-    public void revive() {
-
+    
+    public void revive () {
+        
         this.killed = false;
     }
-
-    public boolean isDead() {
-
+    
+    public boolean isDead () {
+        
         return this.killed;
     }
-
-    public boolean onGround() {
+    
+    public boolean onGround () {
+        
         return onGround;
     }
-
-    public boolean canSpawnHere(float x, float y) {
-
+    
+    public boolean canSpawnHere (float x, float y) {
+        
         return true;
     }
-
-    public float getMotionX() {
+    
+    public float getMotionX () {
+        
         return motionX;
     }
-
-    public void addMotionX(float motionX) {
+    
+    public void addMotionX (float motionX) {
+        
         this.motionX += motionX;
     }
-
-    public void setMotionX(float motionX) {
+    
+    public void setMotionX (float motionX) {
+        
         this.motionX = motionX;
     }
-
-
-    public float getMotionY() {
+    
+    public float getMotionY () {
+        
         return motionY;
     }
-
-    public void setMotionY(float motionY) {
+    
+    public void setMotionY (float motionY) {
+        
         this.motionY = motionY;
     }
-
-    public void addMotionY(float motionY) {
+    
+    public void addMotionY (float motionY) {
+        
         this.motionY += motionY;
     }
-
-    public void setPosition(float x, float y) {
-
+    
+    public void setPosition (float x, float y) {
+        
         this.x = x;
         this.y = y;
     }
-
-    public void setX(float x) {
+    
+    public void setX (float x) {
+        
         this.x = x;
     }
-
-    public float getX() {
-
+    
+    public float getX () {
+        
         return this.x;
     }
-
-    public void setY(float y) {
+    
+    public void setY (float y) {
+        
         this.y = y;
     }
-
-    public float getY() {
-
+    
+    public float getY () {
+        
         return this.y;
     }
-
-    public double getDistance(Entity entity) {
-
+    
+    public double getDistance (Entity entity) {
+        
         return getDistance(entity.getX(), entity.getY());
     }
-
-    public double getDistance(float x, float y) {
-
+    
+    public double getDistance (float x, float y) {
+        
         return Math.sqrt(Math.pow((x - this.getX()), 2) + Math.pow((y - this.getY()), 2));
     }
-
-    public Identifier getId() {
-
+    
+    public Identifier getId () {
+        
         return REGISTRY.getIdentifier(this.getClass());
     }
-
-    public World getWorld() {
-
+    
+    public World getWorld () {
+        
         return this.world;
     }
-
-    public void setWorld(World world) {
-
+    
+    public void setWorld (World world) {
+        
         this.world = world;
     }
-
-    public static void registerEntity(String name, Class<? extends Entity> clazz) {
-
+    
+    public static void registerEntity (String name, Class<? extends Entity> clazz) {
+        
         REGISTRY.registerValue(new Identifier(LD37.ID, name), clazz);
     }
-
-    public static Entity createEntityById(String id, World world) {
-
+    
+    public static Entity createEntityById (String id, World world) {
+        
         return createEntityById(new Identifier(id), world);
     }
-
-    public static Entity createEntityById(Identifier id, World world) {
-
+    
+    public static Entity createEntityById (Identifier id, World world) {
+        
         Entity entity = null;
-
+        
         try {
-
+            
             final Class<? extends Entity> clazz = REGISTRY.getValue(id);
-
+            
             if (clazz != null) {
-
-                entity = (Entity) clazz.getConstructor(new Class[]{World.class}).newInstance(new Object[]{world});
+                
+                entity = (Entity) clazz.getConstructor(new Class[] { World.class }).newInstance(new Object[] { world });
             }
-
-        } catch (Exception e) {
-
+            
+        }
+        catch (Exception e) {
+            
             e.printStackTrace();
         }
-
+        
         return entity;
     }
 }
