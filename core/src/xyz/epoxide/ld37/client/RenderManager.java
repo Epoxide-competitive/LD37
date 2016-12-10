@@ -29,9 +29,6 @@ public class RenderManager {
         
         final EntityPlayer entityPlayer = LD37.INSTANCE.entityPlayer;
         
-        // TODO this is never used m8
-        final World world = entityPlayer.getWorld();
-        
         final float countWidth = 16.0f;
         final float countHeight = 16.0f;
         final float scaleWidth = Gdx.graphics.getWidth() / countWidth;
