@@ -5,8 +5,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import xyz.epoxide.ld37.LD37;
+import xyz.epoxide.ld37.client.ClientRegistry;
+import xyz.epoxide.ld37.entity.Entity;
 import xyz.epoxide.ld37.entity.EntityPlayer;
 import xyz.epoxide.ld37.tile.Tile;
+import xyz.epoxide.ld37.world.World;
+
+import java.util.List;
 
 public class RenderManager {
     private final Texture TILE_TEXTURE;
@@ -16,14 +21,24 @@ public class RenderManager {
         this.TILE_TEXTURE = new Texture("assets/ld37/textures/tile/tiles.png");
     }
 
-    public void renderGame(SpriteBatch batch) {
+    public void renderGame(SpriteBatch batch, float delta) {
 
-        renderTiles(batch, LD37.INSTANCE.world.getBackgroundTileMap());
-
-        renderTiles(batch, LD37.INSTANCE.world.getForegroundTileMap());
+        World world = LD37.INSTANCE.world;
+        renderTiles(batch, world.getBackgroundTileMap(), delta);
+        renderEntity(batch, world.getEntities(), delta);
+        renderTiles(batch, world.getForegroundTileMap(), delta);
     }
 
-    private void renderTiles(SpriteBatch batch, Tile[][] tileMap) {
+    private void renderEntity(SpriteBatch batch, List<Entity> entities, float delta) {
+        renderer.setProjectionMatrix(batch.getProjectionMatrix());
+        batch.begin();
+        for (Entity entity : entities) {
+            ClientRegistry.entityRenderMap.get(entity.getClass()).render(entity, 0, 0, delta);
+        }
+        batch.end();
+    }
+
+    private void renderTiles(SpriteBatch batch, Tile[][] tileMap, float delta) {
 
         final EntityPlayer entityPlayer = LD37.INSTANCE.entityPlayer;
 
