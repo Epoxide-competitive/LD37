@@ -43,7 +43,7 @@ public class RenderManager {
             for (int i = -1; i < countWidth + 1; i++) {
                 int xx = (int) (i + x);
                 if (xx >= 0 && xx < tileMap.length && yy >= 0 && yy < tileMap[xx].length) {
-                    batch.draw(tileMap[xx][yy].texture, (i + xRem) * scaleWidth, (j + yRem) * scaleHeight, scaleWidth, scaleHeight);
+//                    batch.draw(tileMap[xx][yy].texture, (i + xRem) * scaleWidth, (j + yRem) * scaleHeight, scaleWidth, scaleHeight);
                 }
             }
         }
