@@ -8,7 +8,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.sun.org.apache.xpath.internal.operations.Gt;
 
+import sun.rmi.runtime.Log;
 import xyz.epoxide.ld37.client.RenderManager;
 import xyz.epoxide.ld37.entity.EntityPlayer;
 import xyz.epoxide.ld37.input.InputHandler;
@@ -34,7 +36,12 @@ public class LD37 extends ApplicationAdapter {
         
         Gdx.input.setInputProcessor(new InputHandler());
         
+        Gdx.app.log("GL", "GL_RENDERER = " + Gdx.gl.glGetString(GL20.GL_RENDERER));
+        Gdx.app.log("GL", "GL_VENDOR = " + Gdx.gl.glGetString(GL20.GL_VENDOR));
+        Gdx.app.log("GL", "GL_VERSION = " + Gdx.gl.glGetString(GL20.GL_VERSION));
+        
         for (Controller controller : Controllers.getControllers()) {
+            
             Gdx.app.log("INFO", controller.getName());
         }
         
