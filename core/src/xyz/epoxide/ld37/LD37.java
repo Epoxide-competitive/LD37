@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import xyz.epoxide.ld37.client.render.RenderManager;
 import xyz.epoxide.ld37.entity.EntityPlayer;
 import xyz.epoxide.ld37.input.InputHandler;
+import xyz.epoxide.ld37.input.keybind.KeyBind;
 import xyz.epoxide.ld37.world.World;
 
 public class LD37 extends ApplicationAdapter {
@@ -75,6 +76,14 @@ public class LD37 extends ApplicationAdapter {
      */
     private void update(float delta) {
 
+        for (KeyBind key : KeyBind.REGISTRY) {
+            
+            if (key.isPressed()) {
+                
+                key.onUpdate();
+            }
+        }
+        
         if (this.world != null) {
 
             this.world.onUpdate();
