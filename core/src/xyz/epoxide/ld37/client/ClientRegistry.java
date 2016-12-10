@@ -8,9 +8,9 @@ import java.util.Map;
 
 public class ClientRegistry {
 
-    private Map<Class<? extends Entity>, RenderEntity> entityRenderMap = new HashMap<>();
+    public static Map<Class<? extends Entity>, RenderEntity> entityRenderMap = new HashMap<>();
 
-    public void registerEntity(Class<? extends Entity> entityClass, RenderEntity renderEntity) {
-        this.entityRenderMap.put(entityClass, renderEntity);
+    public static void registerEntityRender(Class<? extends Entity> entityClass, RenderEntity renderEntity) {
+        entityRenderMap.put(entityClass, renderEntity);
     }
 }
