@@ -2,6 +2,8 @@ package xyz.epoxide.ld37;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -27,12 +29,17 @@ public class LD37 extends ApplicationAdapter {
         LD37.INSTANCE = this;
 
         Gdx.input.setInputProcessor(new InputHandler());
+
+        for (Controller controller : Controllers.getControllers()) {
+            Gdx.app.log("INFO", controller.getName());
+        }
+
         this.batch = new SpriteBatch();
         this.font = new BitmapFont();
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.renderManager = new RenderManager();
         this.entityPlayer = new EntityPlayer();
-        this.world = new World();
+        this.world = new World(Gdx.files.internal("background.map"), Gdx.files.internal("foreground.map"));
         this.entityPlayer.world = this.world;
     }
 

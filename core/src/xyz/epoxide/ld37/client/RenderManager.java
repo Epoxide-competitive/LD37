@@ -12,8 +12,6 @@ public class RenderManager {
     final ShapeRenderer renderer = new ShapeRenderer();
 
     public void renderGame(SpriteBatch batch) {
-        final EntityPlayer entityPlayer = LD37.INSTANCE.entityPlayer;
-
         renderTiles(batch, LD37.INSTANCE.world.getBackgroundTileMap());
 
         renderTiles(batch, LD37.INSTANCE.world.getForegroundTileMap());
