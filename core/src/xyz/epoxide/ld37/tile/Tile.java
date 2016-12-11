@@ -14,8 +14,8 @@ public class Tile extends Registerable<Tile> {
     public static final NamedRegistry<Tile> REGISTRY = new NamedRegistry<Tile>();
     
     public static final Tile VOID = registerTile("void", new Tile(-1));
-    public static final Tile STONE_PILLAR_BASE = registerTile("stone", new Tile(-4714223).setUV(1.0f / 256.0f, 56.0f / 256.0f, 7.0f / 256.0f, 64.0f / 256.0f));
-    public static final Tile STONE_PILLAR = registerTile("stone", new Tile(-16777216).setUV(1.0f / 256.0f, 48.0f / 256.0f, 7.0f / 256.0f, 56.0f / 256.0f));
+    public static final Tile STONE_PILLAR_BASE = registerTile("stone", new Tile(0xFF0000FF).setUV(8.0f / 256.0f, 40.0f / 256.0f, 16.0f / 256.0f, 48.0f / 256.0f));
+    public static final Tile STONE_PILLAR = registerTile("stone", new Tile(0xFFFF00FF).setUV(1.0f / 256.0f, 48.0f / 256.0f, 7.0f / 256.0f, 56.0f / 256.0f));
     
     public static final Box DEFAULT_BOUNDS = new Box(0,0,1,1);
     // public static final Tile WATER = registerTile("water", new Tile(-4714223));

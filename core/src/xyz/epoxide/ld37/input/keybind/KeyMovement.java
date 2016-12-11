@@ -14,11 +14,11 @@ public class KeyMovement extends KeyBind {
         
         switch (this.getKeyCode()) {
             case Input.Keys.A: {
-                LD37.INSTANCE.entityPlayer.addMotionX(-2 * delta);
+                LD37.INSTANCE.entityPlayer.addMotionX(-6.0f);
                 break;
             }
             case Input.Keys.D: {
-                LD37.INSTANCE.entityPlayer.addMotionX(2 * delta);
+                LD37.INSTANCE.entityPlayer.addMotionX(6.0f);
                 break;
             }
         }

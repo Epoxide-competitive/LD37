@@ -46,8 +46,10 @@ public class LD37 extends ApplicationAdapter {
         this.font = new BitmapFont();
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.renderManager = new RenderManager();
-        this.world = new World(Gdx.files.internal("assets/background.map"), Gdx.files.internal("assets/foreground.map"));
+        this.world = new World(Gdx.files.internal("assets/background.png"), Gdx.files.internal("assets/world.png"), Gdx.files.internal("assets/foreground.png"));
         this.entityPlayer = new EntityPlayer(this.world);
+        this.entityPlayer.setX(16);
+        this.entityPlayer.setY(16);
     }
     
     @Override
@@ -55,7 +57,7 @@ public class LD37 extends ApplicationAdapter {
         
         final float delta = Gdx.graphics.getDeltaTime();
         // TODO Setup Limited Updates
-        this.update(delta);
+		this.update(delta);
         // TODO Setup launch which are asset loading
         // TODO Setup Gui Rendering
         

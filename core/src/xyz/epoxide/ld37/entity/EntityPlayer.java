@@ -8,5 +8,7 @@ public class EntityPlayer extends Entity {
         
         super(world);
         this.setY(10);
+        this.animFrames = 8;
+        this.cycleSpeed = 0.0625f;
     }
 }

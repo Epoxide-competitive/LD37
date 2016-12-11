@@ -8,6 +8,7 @@ public enum Direction {
     LEFT(-1, 0),
     RIGHT(1, 0),
     UNKNOWN(0, 0),
+    STILL(0, 0),
     UP(0, 1),
     UP_LEFT(-1, 1),
     UP_RIGHT(1, 1);

@@ -12,7 +12,11 @@ public class KeyJump extends KeyBind {
     }
     
     @Override
-    public void onPressed() {
-        LD37.INSTANCE.entityPlayer.addMotionY(20.0f*Gdx.graphics.getDeltaTime());
+    public void onUpdate(float delta) {
+        if (LD37.INSTANCE.entityPlayer.onGround()){
+    		LD37.INSTANCE.entityPlayer.setY(LD37.INSTANCE.entityPlayer.getY()+0.1f);
+    	}
+    	LD37.INSTANCE.entityPlayer.setOnGround(false);
+    	LD37.INSTANCE.entityPlayer.setMotionY(20.0f);
     }
 }

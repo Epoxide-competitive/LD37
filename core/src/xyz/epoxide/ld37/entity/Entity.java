@@ -13,23 +13,32 @@ public class Entity {
     
     public static final NamedRegistry<Class<? extends Entity>> REGISTRY = new NamedRegistry<Class<? extends Entity>>();
     
-    private float x;
-    private float y;
-    private float motionX;
-    private float motionY;
+    protected float x;
+    protected float y;
+    protected float motionX;
+    protected float motionY;
     
-    private World world;
+    protected World world;
     
-    private Direction direction;
+    protected Direction direction;
     
-    private boolean killed;
-    private boolean hasGravity;
-    private boolean onGround;
+    protected boolean noClip = false;
+    protected boolean killed;
+    protected boolean hasGravity = true;
+    protected boolean onGround;
+    protected int animCycle = 0;
+    protected int animFrames = 0;
+    protected float cycleTime = 0;
+    protected float cycleSpeed = 8.0f/256.0f;
     
     public Entity(World world) {
         
         this.world = world;
         this.world.spawnEntity(this, this.getX(), this.getY());
+    }
+    
+    public Direction getDirection(){
+    	return direction;
     }
     
     public void onEntitySpawned () {
@@ -40,52 +49,85 @@ public class Entity {
         
     }
     
+    public int getAnimationStage(){
+    	return animCycle;
+    }
+    
     public void onUpdate (float delta) {
+    	cycleTime += delta;
+    	if (cycleTime > cycleSpeed){
+    		animCycle ++;
+    		cycleTime = 0;
+    	}
+    	if (animCycle >= animFrames){
+    		animCycle = 0;
+    	}
+        this.onGround = false;
+        this.direction = (this.getMotionX() == 0) ? (this.direction == null ? Direction.STILL : this.direction) : (this.getMotionX() > 0) ? Direction.RIGHT : Direction.LEFT;
         
-        if (this.getMotionX() == 0) {
-            this.direction = Direction.UNKNOWN;
-        }
-        if (this.getMotionX() > 0) {
-            this.direction = Direction.RIGHT;
-        }
-        else {
-            this.direction = Direction.LEFT;
-        }
+        this.setX(this.getX() + this.getMotionX()*delta);
+        this.setY(this.getY() + this.getMotionY()*delta);
         
-        this.setX(this.getX() + this.getMotionX());
-        this.setY(this.getY() + this.getMotionY());
         if (this.getMotionX() != 0) {
+            
             if (this.getMotionX() < 0.00001 && this.getMotionX() > -0.00001) {
+                
                 this.setMotionX(0);
             }
+            
             else {
+                
                 this.setMotionX(this.getMotionX() * 0.5f);
             }
         }
+        if (this.hasGravity){
+            this.addMotionY(-0.02f);
+        }
+        if (this.getY() < 0){
+        	this.onGround = true;
+            this.setY(0);
+        }
         
-        Box boxDown = this.getWorld().getBoxInDirection(this, Direction.DOWN);
-        Box boxLeft = this.getWorld().getBoxInDirection(this, Direction.LEFT);
-        Box boxRight = this.getWorld().getBoxInDirection(this, Direction.RIGHT);
-        Box boxUp = this.getWorld().getBoxInDirection(this, Direction.UP);
-        
-        if (boxDown.contains(this.getX(), this.getY())){
-        	onGround = true;
-        	if (this.getMotionY() <= 0){
-        		this.setMotionY(0);
-            	this.setY(boxDown.y+boxDown.h);
+        if (!this.noClip){
+        	Tile[][] tiles = world.getTileMap();
+        	int baseX = (int)getX();
+        	int baseY = (int)getY();
+        	for (int i = -3; i < 4; i ++){
+        		for (int j = -3; j < 4; j ++){
+        			if (baseX+i >= 0 && baseX+i < tiles.length){
+        				if (baseY+j >= 0 && baseY+j < tiles[baseX+i].length){
+        					Tile t = tiles[baseX+i][baseY+j];
+        					if (t != Tile.VOID){
+        						if (getMotionY() < 0 && this.x >= baseX+i && this.x <= baseX+i+1f && this.y >= baseY+j && this.y <= baseY+j+1f){
+        							this.onGround = true;
+        							setMotionY(0);
+        							this.y = baseY+j+1;
+        						}
+        						if (getMotionY() > 0 && this.x >= baseX+i && this.x <= baseX+i+1f && this.y+2 >= baseY+j && this.y+2 <= baseY+j+1f){
+        							setMotionY(0);
+        							this.y = baseY+j-2;
+        						}
+        						if (getMotionX() < 0 && this.x-0.5f >= baseX+i && this.x-0.5f <= baseX+i+1f && this.y+0.7f >= baseY+j && this.y+0.7f <= baseY+j+1f){
+        							setMotionX(0);
+        							this.x = baseX+i+1.5f;
+        						}
+        						if (getMotionX() > 0 && this.x+0.5f >= baseX+i && this.x+0.5f <= baseX+i+1f && this.y+0.7f >= baseY+j && this.y+0.7f <= baseY+j+1f){
+        							setMotionX(0);
+        							this.x = baseX+i-0.5f;
+        						}
+        						if (getMotionX() < 0 && this.x-0.5f >= baseX+i && this.x-0.5f <= baseX+i+1f && this.y+1.3f >= baseY+j && this.y+1.3f <= baseY+j+1f){
+        							setMotionX(0);
+        							this.x = baseX+i+1.5f;
+        						}
+        						if (getMotionX() > 0 && this.x+0.5f >= baseX+i && this.x+0.5f <= baseX+i+1f && this.y+1.3f >= baseY+j && this.y+1.3f <= baseY+j+1f){
+        							setMotionX(0);
+        							this.x = baseX+i-0.5f;
+        						}
+        					}
+        				}
+        			}
+        		}
         	}
-        }
-        else {
-        	onGround = false;
-        }
-        if (onGround && this.getMotionY() <= 0) {
-            this.setMotionY(0);
-        }
-        else {
-            if (this.getY() > 0 && this.hasGravity)
-                this.addMotionY(-0.01f*delta);
-            else
-                this.setY(0);
         }
     }
     
@@ -103,6 +145,10 @@ public class Entity {
     public boolean isDead () {
         
         return this.killed;
+    }
+    
+    public void setOnGround(boolean grounded){
+    	this.onGround = grounded;
     }
     
     public boolean onGround () {
