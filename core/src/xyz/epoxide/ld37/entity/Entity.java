@@ -40,23 +40,20 @@ public class Entity {
     
     public void onUpdate (float delta) {
         
-        if (this.getMotionX() == 0) {
-            this.direction = Direction.UNKNOWN;
-        }
-        if (this.getMotionX() > 0) {
-            this.direction = Direction.RIGHT;
-        }
-        else {
-            this.direction = Direction.LEFT;
-        }
+        this.direction = (this.getMotionX() == 0) ? Direction.STILL : (this.getMotionX() > 0) ? Direction.RIGHT : Direction.LEFT;
         
         this.setX(this.getX() + this.getMotionX());
         this.setY(this.getY() + this.getMotionY());
+        
         if (this.getMotionX() != 0) {
+            
             if (this.getMotionX() < 0.00001 && this.getMotionX() > -0.00001) {
+                
                 this.setMotionX(0);
             }
+            
             else {
+                
                 this.setMotionX(this.getMotionX() * 0.5f);
             }
         }
