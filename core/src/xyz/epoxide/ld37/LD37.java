@@ -46,7 +46,7 @@ public class LD37 extends ApplicationAdapter {
         this.font = new BitmapFont();
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.renderManager = new RenderManager();
-        this.world = new World(Gdx.files.internal("background.map"), Gdx.files.internal("foreground.map"));
+        this.world = new World(Gdx.files.internal("assets/background.map"), Gdx.files.internal("assets/foreground.map"));
         this.entityPlayer = new EntityPlayer(this.world);
     }
     
@@ -77,7 +77,6 @@ public class LD37 extends ApplicationAdapter {
             this.font.draw(this.batch, "Player X = " + this.entityPlayer.getX(), 10, Gdx.graphics.getHeight() - 100);
             this.font.draw(this.batch, "Player Y = " + this.entityPlayer.getY(), 10, Gdx.graphics.getHeight() - 120);
             this.font.draw(this.batch, "Player On Ground = " + this.entityPlayer.onGround(), 10, Gdx.graphics.getHeight() - 140);
-            this.font.draw(this.batch, "Player Tile Below = " + this.world.getTileBelow(this.entityPlayer, Direction.DOWN).getIdentifier().toString(), 10, Gdx.graphics.getHeight() - 160);
             
             this.batch.end();
         }

@@ -5,6 +5,7 @@ import xyz.epoxide.commons.registry.IRegisterable.Registerable;
 import xyz.epoxide.commons.registry.Identifier;
 import xyz.epoxide.commons.registry.NamedRegistry;
 import xyz.epoxide.ld37.LD37;
+import xyz.epoxide.ld37.utils.Box;
 
 public class Tile extends Registerable<Tile> {
     
@@ -16,6 +17,7 @@ public class Tile extends Registerable<Tile> {
     public static final Tile STONE_PILLAR_BASE = registerTile("stone", new Tile(-4714223).setUV(1.0f / 256.0f, 56.0f / 256.0f, 7.0f / 256.0f, 64.0f / 256.0f));
     public static final Tile STONE_PILLAR = registerTile("stone", new Tile(-16777216).setUV(1.0f / 256.0f, 48.0f / 256.0f, 7.0f / 256.0f, 56.0f / 256.0f));
     
+    public static final Box DEFAULT_BOUNDS = new Box(0,0,1,1);
     // public static final Tile WATER = registerTile("water", new Tile(-4714223));
     
     private final int color;
@@ -37,6 +39,10 @@ public class Tile extends Registerable<Tile> {
     public static Tile getTile (int color) {
         
         return tileColorMap.getInverse().get(color);
+    }
+    
+    public Box getBox(){
+    	return DEFAULT_BOUNDS; 
     }
     
     private Tile setUV (float u, float v, float u2, float v2) {

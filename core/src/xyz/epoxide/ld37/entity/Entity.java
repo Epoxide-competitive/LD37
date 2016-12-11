@@ -5,6 +5,7 @@ import xyz.epoxide.commons.registry.NamedRegistry;
 import xyz.epoxide.ld37.LD37;
 import xyz.epoxide.ld37.tile.Tile;
 import xyz.epoxide.ld37.util.CombatSource;
+import xyz.epoxide.ld37.utils.Box;
 import xyz.epoxide.ld37.utils.Direction;
 import xyz.epoxide.ld37.world.World;
 
@@ -22,6 +23,7 @@ public class Entity {
     private Direction direction;
     
     private boolean killed;
+    private boolean hasGravity;
     private boolean onGround;
     
     public Entity(World world) {
@@ -61,14 +63,27 @@ public class Entity {
             }
         }
         
-        Tile tile = this.getWorld().getTileBelow(this, Direction.DOWN);
-        this.onGround = tile != Tile.VOID;
-        if (onGround) {
+        Box boxDown = this.getWorld().getBoxInDirection(this, Direction.DOWN);
+        Box boxLeft = this.getWorld().getBoxInDirection(this, Direction.LEFT);
+        Box boxRight = this.getWorld().getBoxInDirection(this, Direction.RIGHT);
+        Box boxUp = this.getWorld().getBoxInDirection(this, Direction.UP);
+        
+        if (boxDown.contains(this.getX(), this.getY())){
+        	onGround = true;
+        	if (this.getMotionY() <= 0){
+        		this.setMotionY(0);
+            	this.setY(boxDown.y+boxDown.h);
+        	}
+        }
+        else {
+        	onGround = false;
+        }
+        if (onGround && this.getMotionY() <= 0) {
             this.setMotionY(0);
         }
         else {
-            if (this.getY() > 0)
-                this.setMotionY(-delta);
+            if (this.getY() > 0 && this.hasGravity)
+                this.addMotionY(-0.01f*delta);
             else
                 this.setY(0);
         }
@@ -154,6 +169,14 @@ public class Entity {
     public float getY () {
         
         return this.y;
+    }
+    
+    public void setHasGravity(boolean gravity){
+    	this.hasGravity = gravity;
+    }
+    
+    public boolean getHasGravity(){
+    	return this.hasGravity;
     }
     
     public double getDistance (Entity entity) {

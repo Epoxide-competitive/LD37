@@ -9,6 +9,7 @@ import com.badlogic.gdx.files.FileHandle;
 import xyz.epoxide.ld37.entity.Entity;
 import xyz.epoxide.ld37.tile.Tile;
 import xyz.epoxide.ld37.util.CombatSource;
+import xyz.epoxide.ld37.utils.Box;
 import xyz.epoxide.ld37.utils.Direction;
 
 public class World {
@@ -93,18 +94,33 @@ public class World {
         return bytes[start] << 24 | (bytes[start + 1] & 0xFF) << 16 | (bytes[start + 2] & 0xFF) << 8 | (bytes[start + 3] & 0xFF);
     }
     
-    public Tile getTileBelow (Entity entity, Direction dir) {
+    public Tile getTileInDirection(Entity entity, Direction dir) {
         
-        return getTileBelow(entity.getX(), entity.getY(), dir);
+        return getTileInDirection(entity.getX(), entity.getY(), dir);
     }
     
-    public Tile getTileBelow (float x, float y, Direction dir) {
+    public Tile getTileInDirection(float x, float y, Direction dir) {
         
         // TODO Check Bounds
         if (x + dir.x >= 0 && y + dir.y >= 0) {
             
-            return backgroundTileMap[Math.round(x) + dir.x][(int) (Math.ceil(y) + dir.y)];
+            return backgroundTileMap[(int) (Math.round(x) + dir.x)][(int) (Math.ceil(y) + dir.y)];
         }
         return Tile.VOID;
+    }
+    
+    public Box getBoxInDirection(Entity entity, Direction dir) {
+        
+        return getBoxInDirection(entity.getX(), entity.getY(), dir);
+    }
+    
+    public Box getBoxInDirection(float x, float y, Direction dir) {
+        
+        // TODO Check Bounds
+        if (x + dir.x >= 0 && y + dir.y >= 0) {
+            
+            return backgroundTileMap[(int) (Math.round(x) + dir.x)][(int) (Math.ceil(y) + dir.y)].getBox().translate((int)x, (int)y);
+        }
+        return Box.NULL_BOX;
     }
 }

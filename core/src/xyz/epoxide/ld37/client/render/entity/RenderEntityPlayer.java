@@ -16,6 +16,6 @@ public class RenderEntityPlayer extends RenderEntity {
     @Override
     public void render (SpriteBatch batch, Entity entity, int x, int y, float delta) {
         
-        batch.draw(ENTITY_TEXTURE, Gdx.graphics.getWidth() / 2 - SCALE_WIDTH / 2, Gdx.graphics.getHeight() / 2 - SCALE_HEIGHT / 2, SCALE_WIDTH, SCALE_HEIGHT, 13.0f / 256.0f, 16.0f / 256.0f, 0, 0);
+        batch.draw(ENTITY_TEXTURE, Gdx.graphics.getWidth() / 2 - SCALE_WIDTH / 2, Gdx.graphics.getHeight() / 2 - SCALE_HEIGHT / 2, SCALE_WIDTH, SCALE_HEIGHT, 16.0f / 256.0f, 16.0f / 256.0f, 0, 0);
     }
 }

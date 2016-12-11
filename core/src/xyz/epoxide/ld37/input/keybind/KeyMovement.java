@@ -13,20 +13,12 @@ public class KeyMovement extends KeyBind {
     public void onUpdate (float delta) {
         
         switch (this.getKeyCode()) {
-            case Input.Keys.W: {
-                LD37.INSTANCE.entityPlayer.addMotionY(1 * delta);
-                break;
-            }
             case Input.Keys.A: {
-                LD37.INSTANCE.entityPlayer.addMotionX(-1 * delta);
-                break;
-            }
-            case Input.Keys.S: {
-                LD37.INSTANCE.entityPlayer.addMotionY(-1 * delta);
+                LD37.INSTANCE.entityPlayer.addMotionX(-2 * delta);
                 break;
             }
             case Input.Keys.D: {
-                LD37.INSTANCE.entityPlayer.addMotionX(1 * delta);
+                LD37.INSTANCE.entityPlayer.addMotionX(2 * delta);
                 break;
             }
         }

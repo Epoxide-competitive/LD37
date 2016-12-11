@@ -1,5 +1,9 @@
 package xyz.epoxide.ld37.client.render;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -22,6 +26,14 @@ public class RenderManager {
     private final Texture TILE_TEXTURE;
     
     public RenderManager() {
+    	try {
+        	OutputStream stream = new FileOutputStream("test.txt");
+			stream.write("HELLO!".getBytes());
+	    	stream.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         this.TILE_TEXTURE = new Texture("assets/ld37/textures/tile/tiles.png");
     }
     
@@ -52,7 +64,7 @@ public class RenderManager {
                 if (xx >= 0 && xx < tileMap.length && yy >= 0 && yy < tileMap[xx].length) {
                     Tile t = tileMap[xx][yy];
                     if (t != Tile.VOID)
-                        batch.draw(TILE_TEXTURE, (i - xRem + COUNT_WIDTH / 2.0f - 0.5f) * SCALE_WIDTH, (j - yRem + COUNT_HEIGHT / 2.0f - 0.5f) * SCALE_HEIGHT, SCALE_WIDTH, SCALE_HEIGHT, t.u2, t.v2, t.u, t.v);
+                        batch.draw(TILE_TEXTURE, (i - xRem + COUNT_WIDTH / 2.0f) * SCALE_WIDTH, (j - yRem + COUNT_HEIGHT / 2.0f) * SCALE_HEIGHT, 16, 16, t.u2, t.v2, t.u, t.v);
                 }
             }
         }
