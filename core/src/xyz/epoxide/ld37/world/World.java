@@ -13,13 +13,25 @@ import xyz.epoxide.ld37.utils.Direction;
 
 public class World {
     
-    private Tile[][] backgroundTileMap;
-    private Tile[][] foregroundTileMap;
-    private List<Entity> entityList = new ArrayList<Entity>();
+    private final Tile[][] backgroundTileMap;
+    private final Tile[][] foregroundTileMap;
+    private final List<Entity> entityList = new ArrayList<Entity>();
+    
+    private final int backgroundWidth;
+    private final int backgroundHeight;
+    
+    private final int foregroundWidth;
+    private final int foregroundHeight;
     
     public World(FileHandle backgroundFile, FileHandle foregroundFile) {
+        
         this.backgroundTileMap = loadFile(backgroundFile);
+        this.backgroundWidth = this.backgroundTileMap.length;
+        this.backgroundHeight = backgroundWidth > 0 ? this.backgroundTileMap[0].length : 0;
+        
         this.foregroundTileMap = loadFile(foregroundFile);
+        this.foregroundWidth = this.foregroundTileMap.length;
+        this.foregroundHeight = foregroundWidth > 0 ? this.foregroundTileMap[0].length : 0;
     }
     
     private Tile[][] loadFile (FileHandle f) {
@@ -52,6 +64,31 @@ public class World {
         return foregroundTileMap;
     }
     
+    public List<Entity> getEntityList () {
+        
+        return entityList;
+    }
+    
+    public int getBackgroundWidth () {
+        
+        return backgroundWidth;
+    }
+    
+    public int getBackgroundHeight () {
+        
+        return backgroundHeight;
+    }
+    
+    public int getForegroundWidth () {
+        
+        return foregroundWidth;
+    }
+    
+    public int getForegroundHeight () {
+        
+        return foregroundHeight;
+    }
+    
     public void onUpdate (float delta) {
         
         for (Iterator<Entity> iterator = this.entityList.iterator(); iterator.hasNext();) {
@@ -63,6 +100,7 @@ public class World {
                 entity.onEntityKilled(CombatSource.STATE_BASED);
                 iterator.remove();
             }
+            
             else {
                 
                 entity.onUpdate(delta);
@@ -100,11 +138,21 @@ public class World {
     
     public Tile getTileBelow (float x, float y, Direction dir) {
         
-        // TODO Check Bounds
-        if (x + dir.x >= 0 && y + dir.y >= 0) {
+        if (inBounds(x, y, false, dir) && x + dir.x >= 0 && y + dir.y >= 0) {
             
             return backgroundTileMap[Math.round(x) + dir.x][(int) (Math.ceil(y) + dir.y)];
         }
+        
         return Tile.VOID;
+    }
+    
+    public boolean inBounds (float x, float y, boolean useForeground, Direction dir) {
+        
+        return inBounds(x, y, useForeground) && inBounds(x + dir.x, y + dir.y, useForeground);
+    }
+    
+    public boolean inBounds (float x, float y, boolean useForeground) {
+        
+        return x >= 0 && y >= 0 && (useForeground ? (x < this.foregroundWidth && y < this.foregroundHeight) : (x < this.backgroundWidth && y < this.backgroundHeight));
     }
 }
