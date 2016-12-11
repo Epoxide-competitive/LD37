@@ -6,7 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import xyz.epoxide.ld37.entity.Entity;
 
 public class RenderEntity {
-    public static final Texture ENTITY_TEXTURE = new Texture("assets/ld37/textures/char/char.png");
+    public static final Texture PLAYER_TEXTURE = new Texture("assets/ld37/textures/char/char.png");
+    public static final Texture ENTITY_TEXTURE = new Texture("assets/ld37/textures/char/entity.png");
     
     public RenderEntity() {
         

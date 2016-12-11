@@ -11,7 +11,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 
 import xyz.epoxide.ld37.tile.Tile;
+import xyz.epoxide.ld37.LD37;
 import xyz.epoxide.ld37.entity.Entity;
+import xyz.epoxide.ld37.entity.EntityParticle;
 import xyz.epoxide.ld37.tile.Tile;
 import xyz.epoxide.ld37.util.CombatSource;
 import xyz.epoxide.ld37.utils.Box;
@@ -19,31 +21,46 @@ import xyz.epoxide.ld37.utils.Direction;
 
 public class World {
     
-    private final Tile[][] backgroundTileMap;
-    private final Tile[][] tileMap;
-    private final Tile[][] foregroundTileMap;
-    private final List<Entity> entityList = new ArrayList<Entity>();
+    private Tile[][] backgroundTileMap;
+    private Tile[][] tileMap;
+    private Tile[][] foregroundTileMap;
+    private List<Entity> entityList = new ArrayList<Entity>();
+    private List<EntityParticle> particleList = new ArrayList<EntityParticle>();
     
-    private final int backgroundWidth;
-    private final int backgroundHeight;
+    private int backgroundWidth;
+    private int backgroundHeight;
     
-    private final int worldWidth;
-    private final int worldHeight;
+    private int worldWidth;
+    private int worldHeight;
     
-    private final int foregroundWidth;
-    private final int foregroundHeight;
+    private int foregroundWidth;
+    private int foregroundHeight;
     
-    public World(FileHandle backgroundFile, FileHandle worldFile, FileHandle foregroundFile) {
+    public World() {
         
-        this.backgroundTileMap = loadFile(backgroundFile);
+        this.backgroundTileMap = loadFile(Gdx.files.internal("assets/background_"+LD37.worldX+"_"+LD37.worldY+".png"));
         this.backgroundWidth = this.backgroundTileMap.length;
         this.backgroundHeight = backgroundWidth > 0 ? this.backgroundTileMap[0].length : 0;
         
-        this.tileMap = loadFile(worldFile);
+        this.tileMap = loadFile(Gdx.files.internal("assets/world_"+LD37.worldX+"_"+LD37.worldY+".png"));
         this.worldWidth = this.tileMap.length;
         this.worldHeight = worldWidth > 0 ? this.tileMap[0].length : 0;
         
-        this.foregroundTileMap = loadFile(foregroundFile);
+        this.foregroundTileMap = loadFile(Gdx.files.internal("assets/foreground_"+LD37.worldX+"_"+LD37.worldY+".png"));
+        this.foregroundWidth = this.foregroundTileMap.length;
+        this.foregroundHeight = foregroundWidth > 0 ? this.foregroundTileMap[0].length : 0;
+    }
+    
+    public void refresh(){
+        this.backgroundTileMap = loadFile(Gdx.files.internal("assets/background_"+LD37.worldX+"_"+LD37.worldY+".png"));
+        this.backgroundWidth = this.backgroundTileMap.length;
+        this.backgroundHeight = backgroundWidth > 0 ? this.backgroundTileMap[0].length : 0;
+        
+        this.tileMap = loadFile(Gdx.files.internal("assets/world_"+LD37.worldX+"_"+LD37.worldY+".png"));
+        this.worldWidth = this.tileMap.length;
+        this.worldHeight = worldWidth > 0 ? this.tileMap[0].length : 0;
+        
+        this.foregroundTileMap = loadFile(Gdx.files.internal("assets/foreground_"+LD37.worldX+"_"+LD37.worldY+".png"));
         this.foregroundWidth = this.foregroundTileMap.length;
         this.foregroundHeight = foregroundWidth > 0 ? this.foregroundTileMap[0].length : 0;
     }
@@ -72,6 +89,14 @@ public class World {
         return tilemap;
     }
     
+    public void loadTiles(){
+    	for (int x = 0; x < worldWidth; x ++){
+    		for (int y = 0; y < worldHeight; y ++){
+    			tileMap[x][y].onLoad(this, x, y);
+    		}
+    	}
+    }
+    
     public Tile[][] getBackgroundTileMap () {
         
         return backgroundTileMap;
@@ -90,6 +115,11 @@ public class World {
     public List<Entity> getEntityList () {
         
         return entityList;
+    }
+    
+    public List<EntityParticle> getParticleList () {
+        
+        return particleList;
     }
     
     public int getBackgroundWidth () {
@@ -135,7 +165,20 @@ public class World {
             }
             
             else {
+                entity.onUpdate(delta);
+            }
+        }
+        for (Iterator<EntityParticle> iterator = this.particleList.iterator(); iterator.hasNext();) {
+            
+        	EntityParticle entity = iterator.next();
+            
+            if (entity.isDead()) {
                 
+                entity.onEntityKilled(CombatSource.STATE_BASED);
+                iterator.remove();
+            }
+            
+            else {
                 entity.onUpdate(delta);
             }
         }
@@ -144,6 +187,19 @@ public class World {
     public List<Entity> getEntities () {
         
         return this.entityList;
+    }
+    
+    public boolean addParticle (EntityParticle entity, float x, float y) {
+        
+        if (entity.canSpawnHere(x, y)) {
+            
+            entity.setPosition(x, y);
+            particleList.add(entity);
+            entity.onEntitySpawned();
+            return true;
+        }
+        
+        return false;
     }
     
     public boolean spawnEntity (Entity entity, float x, float y) {
@@ -157,6 +213,14 @@ public class World {
         }
         
         return false;
+    }
+    
+    public void removeEntity(Entity entity){
+    	for (int i = 0; i < entityList.size(); i ++){
+    		if (entityList.get(i).id == entity.id){
+    			entityList.remove(i);
+    		}
+    	}
     }
     
     private int fromByteArray (byte[] bytes, int start) {

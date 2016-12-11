@@ -34,7 +34,12 @@ public class EntityLiving extends Entity {
     }
     
     public void attack (CombatSource source) {
-        
+        if (source.getSource() != null){
+        	this.addMotionY(5.0f);
+        	float sign = Math.signum(source.getSource().getX()-getX());
+        	this.setMotionX(-6.0f*sign);
+        }
+    	
         this.health = Math.min(this.getHealth() - source.getAmount(), this.getMaxHealth());
         
         if (this.getHealth() < 0.25f) {

@@ -6,6 +6,7 @@ import xyz.epoxide.commons.registry.Identifier;
 import xyz.epoxide.commons.registry.NamedRegistry;
 import xyz.epoxide.ld37.LD37;
 import xyz.epoxide.ld37.utils.Box;
+import xyz.epoxide.ld37.world.World;
 
 public class Tile extends Registerable<Tile> {
     
@@ -15,7 +16,8 @@ public class Tile extends Registerable<Tile> {
     
     public static final Tile VOID = registerTile("void", new Tile(-1));
     public static final Tile STONE_PILLAR_BASE = registerTile("stone", new Tile(0xFF0000FF).setUV(8.0f / 256.0f, 40.0f / 256.0f, 16.0f / 256.0f, 48.0f / 256.0f));
-    public static final Tile STONE_PILLAR = registerTile("stone", new Tile(0xFFFF00FF).setUV(1.0f / 256.0f, 48.0f / 256.0f, 7.0f / 256.0f, 56.0f / 256.0f));
+    public static final Tile STONE_PILLAR = registerTile("stone", new Tile(0xFFFF00FF).setUV(0.0f / 256.0f, 48.0f / 256.0f, 8.0f / 256.0f, 56.0f / 256.0f));
+    public static final Tile DIRT = registerTile("dirt", new Tile(0xFF00FFFF).setUV(0.0f / 256.0f, 48.0f / 256.0f, 8.0f / 256.0f, 56.0f / 256.0f));
     
     public static final Box DEFAULT_BOUNDS = new Box(0,0,1,1);
     // public static final Tile WATER = registerTile("water", new Tile(-4714223));
@@ -27,6 +29,10 @@ public class Tile extends Registerable<Tile> {
     public Tile(int color) {
         this.color = color;
         tileColorMap.put(this, color);
+    }
+    
+    public void onLoad(World world, int x, int y){
+    	
     }
     
     private static Tile registerTile (String id, Tile tile) {

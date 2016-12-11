@@ -1,5 +1,7 @@
 package xyz.epoxide.ld37.entity;
 
+import java.util.Random;
+
 import xyz.epoxide.commons.registry.Identifier;
 import xyz.epoxide.commons.registry.NamedRegistry;
 import xyz.epoxide.ld37.LD37;
@@ -12,6 +14,8 @@ import xyz.epoxide.ld37.world.World;
 public class Entity {
     
     public static final NamedRegistry<Class<? extends Entity>> REGISTRY = new NamedRegistry<Class<? extends Entity>>();
+    
+    protected static final Random random = new Random();
     
     protected float x;
     protected float y;
@@ -28,13 +32,24 @@ public class Entity {
     protected boolean onGround;
     protected int animCycle = 0;
     protected int animFrames = 0;
+    protected int prevAnimCycle = 0;
     protected float cycleTime = 0;
     protected float cycleSpeed = 8.0f/256.0f;
+    protected int animType = 0;
+    
+    protected static int globalId = 0;
+    public int id = 0;
+    protected boolean canRender = false;
+    protected boolean isCollided = false;
     
     public Entity(World world) {
         
         this.world = world;
-        this.world.spawnEntity(this, this.getX(), this.getY());
+        this.id = globalId++;
+    }
+    
+    public boolean canRender(){
+    	return this.canRender;
     }
     
     public Direction getDirection(){
@@ -49,12 +64,51 @@ public class Entity {
         
     }
     
+    public int getPrevAnimationStage(){
+    	return prevAnimCycle;
+    }
+    
     public int getAnimationStage(){
     	return animCycle;
     }
     
+    public void setAnimationStage(int stage){
+    	this.animCycle = stage;
+    }
+    
+    public int getAnimationType(){
+    	return animType;
+    }
+    
+    public void setAnimationType(int type){
+    	this.animType = type;
+    }
+    
+    public int getAnimationFrames(){
+    	return animFrames;
+    }
+    
+    public void setAnimationFrames(int frames){
+    	this.animFrames = frames;
+    }
+    
+    public float getCycleSpeed(){
+    	return cycleSpeed;
+    }
+    
+    public void setCycleSpeed(float speed){
+    	this.cycleSpeed = speed;
+    }
+    
+    public boolean isUpdatingFacing(){
+    	return true;
+    }
+    
     public void onUpdate (float delta) {
+    	isCollided = false;
+    	this.canRender = true;
     	cycleTime += delta;
+		prevAnimCycle = animCycle;
     	if (cycleTime > cycleSpeed){
     		animCycle ++;
     		cycleTime = 0;
@@ -62,18 +116,14 @@ public class Entity {
     	if (animCycle >= animFrames){
     		animCycle = 0;
     	}
+    	
         this.onGround = false;
-        this.direction = (this.getMotionX() == 0) ? (this.direction == null ? Direction.STILL : this.direction) : (this.getMotionX() > 0) ? Direction.RIGHT : Direction.LEFT;
+        if (this.isUpdatingFacing()){
+        	this.direction = (this.getMotionX() == 0) ? (this.direction == null ? Direction.STILL : this.direction) : (this.getMotionX() > 0) ? Direction.RIGHT : Direction.LEFT;
+        }
         
         this.setX(this.getX() + this.getMotionX()*delta);
         this.setY(this.getY() + this.getMotionY()*delta);
-        
-        if (this.getMotionX() > 8.0f){
-        	this.setMotionX(8.0f);
-        }
-        if (this.getMotionX() < -8.0f){
-        	this.setMotionX(-8.0f);
-        }
         
         if (this.getMotionX() != 0) {
             
@@ -109,27 +159,33 @@ public class Entity {
         					Tile t = tiles[baseX+i][baseY+j];
         					if (t != Tile.VOID){
         						if (getMotionY() < 0 && this.x >= baseX+i && this.x <= baseX+i+1f && this.y >= baseY+j && this.y <= baseY+j+1f){
+        							isCollided = true;
         							this.onGround = true;
         							setMotionY(0);
         							this.y = baseY+j+1;
         						}
         						if (getMotionY() > 0 && this.x >= baseX+i && this.x <= baseX+i+1f && this.y+1.75 >= baseY+j && this.y+1.75 <= baseY+j+1f){
+        							isCollided = true;
         							setMotionY(0);
         							this.y = baseY+j-1.75f;
         						}
         						if (getMotionX() < 0 && this.x-0.5f >= baseX+i && this.x-0.5f <= baseX+i+1f && this.y+0.7f >= baseY+j && this.y+0.7f <= baseY+j+1f){
+        							isCollided = true;
         							setMotionX(0);
         							this.x = baseX+i+1.5f;
         						}
         						if (getMotionX() > 0 && this.x+0.5f >= baseX+i && this.x+0.5f <= baseX+i+1f && this.y+0.7f >= baseY+j && this.y+0.7f <= baseY+j+1f){
+        							isCollided = true;
         							setMotionX(0);
         							this.x = baseX+i-0.5f;
         						}
         						if (getMotionX() < 0 && this.x-0.5f >= baseX+i && this.x-0.5f <= baseX+i+1f && this.y+1.3f >= baseY+j && this.y+1.3f <= baseY+j+1f){
+        							isCollided = true;
         							setMotionX(0);
         							this.x = baseX+i+1.5f;
         						}
         						if (getMotionX() > 0 && this.x+0.5f >= baseX+i && this.x+0.5f <= baseX+i+1f && this.y+1.3f >= baseY+j && this.y+1.3f <= baseY+j+1f){
+        							isCollided = true;
         							setMotionX(0);
         							this.x = baseX+i-0.5f;
         						}

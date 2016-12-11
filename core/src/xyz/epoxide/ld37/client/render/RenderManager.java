@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import xyz.epoxide.ld37.LD37;
 import xyz.epoxide.ld37.client.ClientRegistry;
 import xyz.epoxide.ld37.entity.Entity;
+import xyz.epoxide.ld37.entity.EntityParticle;
 import xyz.epoxide.ld37.entity.EntityPlayer;
 import xyz.epoxide.ld37.tile.Tile;
 import xyz.epoxide.ld37.world.World;
@@ -25,6 +26,8 @@ public class RenderManager {
     
     private final Texture TILE_TEXTURE;
     
+    public final Texture PLAYER_TEXTURE;
+    
     public RenderManager() {
     	try {
         	OutputStream stream = new FileOutputStream("test.txt");
@@ -35,6 +38,7 @@ public class RenderManager {
 			e.printStackTrace();
 		}
         this.TILE_TEXTURE = new Texture("assets/ld37/textures/tile/tiles.png");
+        this.PLAYER_TEXTURE = new Texture("assets/ld37/textures/char/char.png");
     }
     
     public enum TileLayer {
@@ -49,6 +53,26 @@ public class RenderManager {
         renderTiles(batch, world, world.getTileMap(), delta, TileLayer.LAYER_WORLD);
         renderTiles(batch, world, world.getForegroundTileMap(), delta, TileLayer.LAYER_WORLD);
         renderParticles(batch, delta);
+        
+        batch.begin();
+        for (int i = 0; i < LD37.INSTANCE.entityPlayer.getMaxHealth(); i ++){
+        	if (i == 0){
+        		batch.draw(PLAYER_TEXTURE, 1.0f*(LD37.tileWidth/8.0f), Gdx.graphics.getHeight()-11.0f*(LD37.tileWidth/8.0f), 9.0f*(LD37.tileWidth/8.0f), 10.0f*(LD37.tileWidth/8.0f), 80.0f/256.0f, 0.0f/256.0f, 89.0f/256.0f, 10.0f/256.0f);
+        	}
+        	else if (i+1 >= LD37.INSTANCE.entityPlayer.getMaxHealth()){
+        		batch.draw(PLAYER_TEXTURE, 1.0f*(LD37.tileWidth/8.0f)+((i-1)*7.0f+9.0f)*(LD37.tileWidth/8.0f), Gdx.graphics.getHeight()-11.0f*(LD37.tileWidth/8.0f), 8.0f*(LD37.tileWidth/8.0f), 10.0f*(LD37.tileWidth/8.0f), 96.0f/256.0f, 0.0f/256.0f, 104.0f/256.0f, 10.0f/256.0f);
+            }
+        	else {
+        		batch.draw(PLAYER_TEXTURE, 1.0f*(LD37.tileWidth/8.0f)+((i-1)*7.0f+9.0f)*(LD37.tileWidth/8.0f), Gdx.graphics.getHeight()-11.0f*(LD37.tileWidth/8.0f), 7.0f*(LD37.tileWidth/8.0f), 10.0f*(LD37.tileWidth/8.0f), 89.0f/256.0f, 0.0f/256.0f, 96.0f/256.0f, 10.0f/256.0f);
+            }
+        	if (i > LD37.INSTANCE.entityPlayer.getHealth()){
+        		batch.draw(PLAYER_TEXTURE, 1.0f*(LD37.tileWidth/8.0f)+((i-1)*7.0f+9.0f)*(LD37.tileWidth/8.0f), Gdx.graphics.getHeight()-9.0f*(LD37.tileWidth/8.0f), 6.0f*(LD37.tileWidth/8.0f), 6.0f*(LD37.tileWidth/8.0f), 70.0f/256.0f, 10.0f/256.0f, 76.0f/256.0f, 16.0f/256.0f);
+            }
+        	else {
+        		batch.draw(PLAYER_TEXTURE, 1.0f*(LD37.tileWidth/8.0f)+((i-1)*7.0f+9.0f)*(LD37.tileWidth/8.0f), Gdx.graphics.getHeight()-9.0f*(LD37.tileWidth/8.0f), 6.0f*(LD37.tileWidth/8.0f), 6.0f*(LD37.tileWidth/8.0f), 64.0f/256.0f, 10.0f/256.0f, 70.0f/256.0f, 16.0f/256.0f);
+            }
+        }
+        batch.end();
     }
     
     private void renderTiles (SpriteBatch batch, World world, Tile[][] tileMap, float delta, TileLayer layer) {
@@ -90,13 +114,21 @@ public class RenderManager {
         batch.begin();
     	batch.setColor(1.0f,1.0f,1.0f,1.0f);
         for (Entity entity : entities) {
-            ClientRegistry.entityRenderMap.get(entity.getClass()).render(batch, entity, 0, 0, delta);
+        	if (entity.canRender()){
+        		ClientRegistry.entityRenderMap.get(entity.getClass()).render(batch, entity, 0, 0, delta);
+        	}
         }
         batch.end();
     }
     
     private void renderParticles (SpriteBatch batch, float delta) {
-        
+
+        batch.begin();
+    	batch.setColor(1.0f,1.0f,1.0f,1.0f);
+        for (EntityParticle entity : LD37.INSTANCE.world.getParticleList()) {
+            ClientRegistry.entityRenderMap.get(entity.getClass()).render(batch, entity, 0, 0, delta);
+        }
+        batch.end();
     }
     
     public void resize () {

@@ -6,6 +6,7 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -20,6 +21,9 @@ public class LD37 extends ApplicationAdapter {
     private static final boolean DEBUG = true;
     public static LD37 INSTANCE;
     public static final float tileWidth = 32.0f;
+    
+    public static int worldX = 11;
+    public static int worldY = 0;
     
     private SpriteBatch batch;
     private BitmapFont font;
@@ -47,10 +51,11 @@ public class LD37 extends ApplicationAdapter {
         this.font = new BitmapFont();
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.renderManager = new RenderManager();
-        this.world = new World(Gdx.files.internal("assets/background.png"), Gdx.files.internal("assets/world.png"), Gdx.files.internal("assets/foreground.png"));
+        this.world = new World();
         this.entityPlayer = new EntityPlayer(this.world);
         this.entityPlayer.setX(16);
         this.entityPlayer.setY(16);
+        world.spawnEntity(entityPlayer, entityPlayer.getX(), entityPlayer.getY());
     }
     
     @Override
@@ -69,7 +74,7 @@ public class LD37 extends ApplicationAdapter {
         
         this.renderManager.renderGame(this.batch, delta);
         
-        if (DEBUG) {
+        /*if (DEBUG) {
             
             this.batch.begin();
             this.font.draw(this.batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
@@ -83,7 +88,7 @@ public class LD37 extends ApplicationAdapter {
             this.font.draw(this.batch, "Background Dimensions: " + this.world.getMapWidth() + "," + this.world.getMapHeight(), 10, Gdx.graphics.getHeight() - 160);
             
             this.batch.end();
-        }
+        }*/
     }
     
     /**
