@@ -40,8 +40,8 @@ public class World {
         this.backgroundHeight = backgroundWidth > 0 ? this.backgroundTileMap[0].length : 0;
         
         this.tileMap = loadFile(worldFile);
-        this.worldWidth = this.backgroundTileMap.length;
-        this.worldHeight = backgroundWidth > 0 ? this.backgroundTileMap[0].length : 0;
+        this.worldWidth = this.tileMap.length;
+        this.worldHeight = worldWidth > 0 ? this.tileMap[0].length : 0;
         
         this.foregroundTileMap = loadFile(foregroundFile);
         this.foregroundWidth = this.foregroundTileMap.length;
@@ -110,6 +110,16 @@ public class World {
     public int getForegroundHeight () {
         
         return foregroundHeight;
+    }
+    
+    public int getMapWidth () {
+        
+        return worldWidth;
+    }
+    
+    public int getMapHeight () {
+        
+        return worldHeight;
     }
     
     public void onUpdate (float delta) {

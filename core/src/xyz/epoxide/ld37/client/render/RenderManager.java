@@ -44,18 +44,30 @@ public class RenderManager {
     public void renderGame (SpriteBatch batch, float delta) {
         
         World world = LD37.INSTANCE.world;
-        renderTiles(batch, world.getBackgroundTileMap(), delta, TileLayer.LAYER_BACKGROUND);
+        renderTiles(batch, world, world.getBackgroundTileMap(), delta, TileLayer.LAYER_BACKGROUND);
         renderEntity(batch, world.getEntities(), delta);
-        renderTiles(batch, world.getTileMap(), delta, TileLayer.LAYER_WORLD);
-        renderTiles(batch, world.getForegroundTileMap(), delta, TileLayer.LAYER_WORLD);
+        renderTiles(batch, world, world.getTileMap(), delta, TileLayer.LAYER_WORLD);
+        renderTiles(batch, world, world.getForegroundTileMap(), delta, TileLayer.LAYER_WORLD);
         renderParticles(batch, delta);
     }
     
-    private void renderTiles (SpriteBatch batch, Tile[][] tileMap, float delta, TileLayer layer) {
+    private void renderTiles (SpriteBatch batch, World world, Tile[][] tileMap, float delta, TileLayer layer) {
         final EntityPlayer entityPlayer = LD37.INSTANCE.entityPlayer;
         
-        final int x = (int)(entityPlayer.getX()*16.0f-Gdx.graphics.getWidth()/2);
-        final int y = (int)(entityPlayer.getY()*16.0f-Gdx.graphics.getHeight()/2);
+        int x = (int)(entityPlayer.getX()*LD37.tileWidth-Gdx.graphics.getWidth()/2);
+        int y = (int)(entityPlayer.getY()*LD37.tileWidth-Gdx.graphics.getHeight()/2);
+        if (entityPlayer.getX()*LD37.tileWidth < Gdx.graphics.getWidth()/2){
+        	x = 0;
+        }
+        if (entityPlayer.getY()*LD37.tileWidth < Gdx.graphics.getHeight()/2){
+        	y = 0;
+        }
+        if (entityPlayer.getX()*LD37.tileWidth > world.getMapWidth()*LD37.tileWidth-Gdx.graphics.getWidth()/2){
+        	x = (int)(world.getMapWidth()*LD37.tileWidth-Gdx.graphics.getWidth());
+        }
+        if (entityPlayer.getY()*LD37.tileWidth > world.getMapHeight()*LD37.tileWidth-Gdx.graphics.getHeight()/2){
+        	y = (int)(world.getMapHeight()*LD37.tileWidth-Gdx.graphics.getHeight());
+        }
         
         batch.begin();
     	batch.setColor(1.0f,1.0f,1.0f,1.0f);
@@ -66,7 +78,7 @@ public class RenderManager {
         	for (int j = 0; j < tileMap[i].length; j ++){
                 Tile t = tileMap[i][j];
                 if (t != Tile.VOID){
-                    batch.draw(TILE_TEXTURE, ((float)i*16.0f)-x, ((float)j*16.0f)-y, 16, 16, t.u2, t.v2, t.u, t.v);
+                    batch.draw(TILE_TEXTURE, ((float)i*LD37.tileWidth)-x, ((float)j*LD37.tileWidth)-y, LD37.tileWidth, LD37.tileWidth, t.u2, t.v2, t.u, t.v);
                 }
             }
         }

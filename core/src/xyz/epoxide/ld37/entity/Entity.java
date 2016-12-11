@@ -68,20 +68,30 @@ public class Entity {
         this.setX(this.getX() + this.getMotionX()*delta);
         this.setY(this.getY() + this.getMotionY()*delta);
         
+        if (this.getMotionX() > 8.0f){
+        	this.setMotionX(8.0f);
+        }
+        if (this.getMotionX() < -8.0f){
+        	this.setMotionX(-8.0f);
+        }
+        
         if (this.getMotionX() != 0) {
             
-            if (this.getMotionX() < 0.00001 && this.getMotionX() > -0.00001) {
+            if (this.getMotionX() < 0.01 && this.getMotionX() > -0.01) {
                 
                 this.setMotionX(0);
             }
-            
             else {
-                
-                this.setMotionX(this.getMotionX() * 0.5f);
+            	if (this.getMotionX() > 0){
+            		this.setMotionX(this.getMotionX()-40.0f*delta);
+            	}
+            	else if (this.getMotionX() < 0){
+            		this.setMotionX(this.getMotionX()+40.0f*delta);
+            	}
             }
         }
         if (this.hasGravity){
-            this.addMotionY(-0.02f);
+            this.addMotionY(-0.01f);
         }
         if (this.getY() < 0){
         	this.onGround = true;
@@ -103,9 +113,9 @@ public class Entity {
         							setMotionY(0);
         							this.y = baseY+j+1;
         						}
-        						if (getMotionY() > 0 && this.x >= baseX+i && this.x <= baseX+i+1f && this.y+2 >= baseY+j && this.y+2 <= baseY+j+1f){
+        						if (getMotionY() > 0 && this.x >= baseX+i && this.x <= baseX+i+1f && this.y+1.75 >= baseY+j && this.y+1.75 <= baseY+j+1f){
         							setMotionY(0);
-        							this.y = baseY+j-2;
+        							this.y = baseY+j-1.75f;
         						}
         						if (getMotionX() < 0 && this.x-0.5f >= baseX+i && this.x-0.5f <= baseX+i+1f && this.y+0.7f >= baseY+j && this.y+0.7f <= baseY+j+1f){
         							setMotionX(0);

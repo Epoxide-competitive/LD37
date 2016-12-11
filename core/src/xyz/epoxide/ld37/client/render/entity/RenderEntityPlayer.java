@@ -6,6 +6,7 @@ import static xyz.epoxide.ld37.client.render.RenderManager.SCALE_WIDTH;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import xyz.epoxide.ld37.LD37;
 import xyz.epoxide.ld37.entity.Entity;
 import xyz.epoxide.ld37.utils.Direction;
 
@@ -30,12 +31,26 @@ public class RenderEntityPlayer extends RenderEntity {
     		baseU = (16.0f*(float)((entity.getAnimationStage()/2) % 4))/256.0f;
     		baseV = 16.0f/256.0f;
     	}
+    	float rx = Gdx.graphics.getWidth() / 2 - 1.0f*LD37.tileWidth;
+    	float ry = Gdx.graphics.getHeight() / 2;
+    	if (entity.getX()*LD37.tileWidth < Gdx.graphics.getWidth()/2){
+    		rx = (entity.getX()-1.0f)*LD37.tileWidth;
+    	}
+    	if (entity.getY()*LD37.tileWidth < Gdx.graphics.getHeight()/2){
+    		ry = (entity.getY())*LD37.tileWidth;
+    	}
+    	if (entity.getX()*LD37.tileWidth > entity.getWorld().getMapWidth()*LD37.tileWidth-Gdx.graphics.getWidth()/2){
+    		rx = (entity.getX()-1.0f)*LD37.tileWidth-(entity.getWorld().getMapWidth()*LD37.tileWidth-Gdx.graphics.getWidth());
+    	}
+    	if (entity.getY()*LD37.tileWidth > entity.getWorld().getMapHeight()*LD37.tileWidth-Gdx.graphics.getHeight()/2){
+    		ry = (entity.getY())*LD37.tileWidth-(entity.getWorld().getMapHeight()*LD37.tileWidth-Gdx.graphics.getHeight());
+    	}
     	
         if (entity.getDirection().x == -1){
-        	batch.draw(ENTITY_TEXTURE, Gdx.graphics.getWidth() / 2 - 16.0f, Gdx.graphics.getHeight() / 2, 32.0f, 32.0f, baseU+0.0625f, baseV+0.0625f, baseU, baseV);
+        	batch.draw(ENTITY_TEXTURE, (int)rx, (int)ry, 2.0f*LD37.tileWidth, 2.0f*LD37.tileWidth, baseU+0.0625f, baseV+0.0625f, baseU, baseV);
         }
         else {
-        	batch.draw(ENTITY_TEXTURE, Gdx.graphics.getWidth() / 2 + 16.0f, Gdx.graphics.getHeight() / 2, -32.0f, 32.0f, baseU+0.0625f, baseV+0.0625f, baseU, baseV);
+        	batch.draw(ENTITY_TEXTURE, (int)rx + 2.0f*LD37.tileWidth, (int)ry, -2.0f*LD37.tileWidth, 2.0f*LD37.tileWidth, baseU+0.0625f, baseV+0.0625f, baseU, baseV);
         }
     }
 }

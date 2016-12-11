@@ -19,6 +19,7 @@ import xyz.epoxide.ld37.world.World;
 public class LD37 extends ApplicationAdapter {
     private static final boolean DEBUG = true;
     public static LD37 INSTANCE;
+    public static final float tileWidth = 32.0f;
     
     private SpriteBatch batch;
     private BitmapFont font;
@@ -34,7 +35,7 @@ public class LD37 extends ApplicationAdapter {
     public void create () {
         
         LD37.INSTANCE = this;
-        
+        Gdx.graphics.setWindowedMode(640, 400);
         Gdx.input.setInputProcessor(new InputHandler());
         
         for (Controller controller : Controllers.getControllers()) {
@@ -79,6 +80,7 @@ public class LD37 extends ApplicationAdapter {
             this.font.draw(this.batch, "Player X = " + this.entityPlayer.getX(), 10, Gdx.graphics.getHeight() - 100);
             this.font.draw(this.batch, "Player Y = " + this.entityPlayer.getY(), 10, Gdx.graphics.getHeight() - 120);
             this.font.draw(this.batch, "Player On Ground = " + this.entityPlayer.onGround(), 10, Gdx.graphics.getHeight() - 140);
+            this.font.draw(this.batch, "Background Dimensions: " + this.world.getMapWidth() + "," + this.world.getMapHeight(), 10, Gdx.graphics.getHeight() - 160);
             
             this.batch.end();
         }
