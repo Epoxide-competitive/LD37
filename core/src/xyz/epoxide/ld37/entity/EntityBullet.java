@@ -2,8 +2,6 @@ package xyz.epoxide.ld37.entity;
 
 import java.util.List;
 
-import xyz.epoxide.ld37.LD37;
-import xyz.epoxide.ld37.input.keybind.KeyBind;
 import xyz.epoxide.ld37.util.CombatSource;
 import xyz.epoxide.ld37.util.CombatSource.Type;
 import xyz.epoxide.ld37.world.World;

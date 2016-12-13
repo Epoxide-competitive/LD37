@@ -1,15 +1,11 @@
 package xyz.epoxide.ld37.client.render.entity;
 
-import static xyz.epoxide.ld37.client.render.RenderManager.SCALE_HEIGHT;
-import static xyz.epoxide.ld37.client.render.RenderManager.SCALE_WIDTH;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import xyz.epoxide.ld37.LD37;
 import xyz.epoxide.ld37.entity.Entity;
 import xyz.epoxide.ld37.entity.EntityPlayer;
-import xyz.epoxide.ld37.utils.Direction;
 import xyz.epoxide.ld37.world.World;
 
 public class RenderEntitySprout extends RenderEntity {
@@ -23,11 +19,11 @@ public class RenderEntitySprout extends RenderEntity {
     	float baseV = 0;
     	if (entity.getAnimationType() == 0){
     		baseU = 0;
-    		baseV = 48.0f/256.0f;
+    		baseV = 32.0f/256.0f;
     	}
     	if (entity.getAnimationType() == 1){
-    		baseU = (16.0f+(16.0f*(float)((entity.getAnimationStage()) % 4)))/256.0f;
-    		baseV = 48.0f/256.0f;
+    		baseU = (16.0f+(16.0f*((entity.getAnimationStage()) % 4)))/256.0f;
+    		baseV = 32.0f/256.0f;
     	}
     	
         EntityPlayer entityPlayer = LD37.INSTANCE.entityPlayer;

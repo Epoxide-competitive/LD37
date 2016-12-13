@@ -1,6 +1,5 @@
 package xyz.epoxide.ld37.entity;
 
-import xyz.epoxide.ld37.item.Item;
 import xyz.epoxide.ld37.util.CombatSource;
 import xyz.epoxide.ld37.world.World;
 
@@ -26,7 +25,8 @@ public class EntityParticle extends Entity {
         }
     }
     
-    public void onUpdate(float delta) {
+    @Override
+	public void onUpdate(float delta) {
         super.onUpdate(delta);
         if (this.getAnimationStage() == animFrames-1){
         	setDead(CombatSource.STATE_BASED);

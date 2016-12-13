@@ -14,9 +14,8 @@ import xyz.epoxide.ld37.tile.Tile;
 import xyz.epoxide.ld37.LD37;
 import xyz.epoxide.ld37.entity.Entity;
 import xyz.epoxide.ld37.entity.EntityParticle;
-import xyz.epoxide.ld37.tile.Tile;
+import xyz.epoxide.ld37.entity.EntityPlayer;
 import xyz.epoxide.ld37.util.CombatSource;
-import xyz.epoxide.ld37.utils.Box;
 import xyz.epoxide.ld37.utils.Direction;
 
 public class World {
@@ -63,6 +62,16 @@ public class World {
         this.foregroundTileMap = loadFile(Gdx.files.internal("assets/foreground_"+LD37.worldX+"_"+LD37.worldY+".png"));
         this.foregroundWidth = this.foregroundTileMap.length;
         this.foregroundHeight = foregroundWidth > 0 ? this.foregroundTileMap[0].length : 0;
+        
+        for (Iterator<Entity> iterator = this.entityList.iterator(); iterator.hasNext();) { 
+            Entity entity = iterator.next();
+            
+            if (!(entity instanceof EntityPlayer)) {
+                entity.onEntityKilled(CombatSource.STATE_BASED);
+                iterator.remove();
+            }
+        }
+        loadTiles();
     }
     
     private Tile[][] loadFile (FileHandle f) {
@@ -154,20 +163,20 @@ public class World {
     
     public void onUpdate (float delta) {
         
-        for (Iterator<Entity> iterator = this.entityList.iterator(); iterator.hasNext();) {
-            
-            Entity entity = iterator.next();
+        for (int i = 0; i < this.getEntities().size(); i ++) {
+            Entity entity = getEntities().get(i);
             
             if (entity.isDead()) {
                 
                 entity.onEntityKilled(CombatSource.STATE_BASED);
-                iterator.remove();
+                getEntities().remove(i);
+                i = Math.max(0, i-1);
             }
             
             else {
                 entity.onUpdate(delta);
             }
-        }
+    	}
         for (Iterator<EntityParticle> iterator = this.particleList.iterator(); iterator.hasNext();) {
             
         	EntityParticle entity = iterator.next();
@@ -237,7 +246,7 @@ public class World {
         
         if (inBounds(x, y, false, dir) && x + dir.x >= 0 && y + dir.y >= 0) {
             
-            return backgroundTileMap[(int) (Math.round(x) + dir.x)][(int) (Math.ceil(y) + dir.y)];
+            return backgroundTileMap[Math.round(x) + dir.x][(int) (Math.ceil(y) + dir.y)];
         }
         
         return Tile.VOID;

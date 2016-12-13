@@ -3,19 +3,17 @@ package xyz.epoxide.ld37.entity;
 import com.badlogic.gdx.Gdx;
 
 import xyz.epoxide.ld37.LD37;
-import xyz.epoxide.ld37.input.keybind.KeyBind;
-import xyz.epoxide.ld37.input.keybind.KeyJump;
 import xyz.epoxide.ld37.world.World;
 
-public class EntitySprout extends EntityLiving {
+public class EntitySprout extends EntityEnemy {
 	int internalCount = 0;
 
     public EntitySprout(World world) {
         super(world);
         this.animFrames = 4;
         this.cycleSpeed = 0.125f;
-        this.setMaxHealth(2.0f);
-        this.setHealth(2.0f);
+        this.setMaxHealth(3.0f);
+        this.setHealth(3.0f);
     }
     
     @Override

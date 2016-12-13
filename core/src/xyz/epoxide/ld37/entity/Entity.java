@@ -7,7 +7,6 @@ import xyz.epoxide.commons.registry.NamedRegistry;
 import xyz.epoxide.ld37.LD37;
 import xyz.epoxide.ld37.tile.Tile;
 import xyz.epoxide.ld37.util.CombatSource;
-import xyz.epoxide.ld37.utils.Box;
 import xyz.epoxide.ld37.utils.Direction;
 import xyz.epoxide.ld37.world.World;
 
@@ -119,7 +118,7 @@ public class Entity {
     	
         this.onGround = false;
         if (this.isUpdatingFacing()){
-        	this.direction = (this.getMotionX() == 0) ? (this.direction == null ? Direction.STILL : this.direction) : (this.getMotionX() > 0) ? Direction.RIGHT : Direction.LEFT;
+        	this.direction = (Math.abs(this.getMotionX()) < 0.05) ? (this.direction == null ? Direction.STILL : this.direction) : (this.getMotionX() > 0) ? Direction.RIGHT : Direction.LEFT;
         }
         
         this.setX(this.getX() + this.getMotionX()*delta);
@@ -141,11 +140,7 @@ public class Entity {
             }
         }
         if (this.hasGravity){
-            this.addMotionY(-0.01f);
-        }
-        if (this.getY() < 0){
-        	this.onGround = true;
-            this.setY(0);
+            this.addMotionY(-0.025f);
         }
         
         if (!this.noClip){
@@ -336,7 +331,7 @@ public class Entity {
             
             if (clazz != null) {
                 
-                entity = (Entity) clazz.getConstructor(new Class[] { World.class }).newInstance(new Object[] { world });
+                entity = clazz.getConstructor(new Class[] { World.class }).newInstance(new Object[] { world });
             }
             
         }

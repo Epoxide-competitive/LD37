@@ -6,7 +6,6 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -14,7 +13,7 @@ import xyz.epoxide.ld37.client.render.RenderManager;
 import xyz.epoxide.ld37.entity.EntityPlayer;
 import xyz.epoxide.ld37.input.InputHandler;
 import xyz.epoxide.ld37.input.keybind.KeyBind;
-import xyz.epoxide.ld37.utils.Direction;
+import xyz.epoxide.ld37.tile.Tile;
 import xyz.epoxide.ld37.world.World;
 
 public class LD37 extends ApplicationAdapter {
@@ -51,11 +50,13 @@ public class LD37 extends ApplicationAdapter {
         this.font = new BitmapFont();
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.renderManager = new RenderManager();
+        Tile.init();
         this.world = new World();
         this.entityPlayer = new EntityPlayer(this.world);
-        this.entityPlayer.setX(16);
+        this.entityPlayer.setX(24);
         this.entityPlayer.setY(16);
         world.spawnEntity(entityPlayer, entityPlayer.getX(), entityPlayer.getY());
+        world.loadTiles();
     }
     
     @Override

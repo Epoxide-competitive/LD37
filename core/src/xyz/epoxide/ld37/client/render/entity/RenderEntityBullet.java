@@ -1,15 +1,11 @@
 package xyz.epoxide.ld37.client.render.entity;
 
-import static xyz.epoxide.ld37.client.render.RenderManager.SCALE_HEIGHT;
-import static xyz.epoxide.ld37.client.render.RenderManager.SCALE_WIDTH;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import xyz.epoxide.ld37.LD37;
 import xyz.epoxide.ld37.entity.Entity;
 import xyz.epoxide.ld37.entity.EntityPlayer;
-import xyz.epoxide.ld37.utils.Direction;
 import xyz.epoxide.ld37.world.World;
 
 public class RenderEntityBullet extends RenderEntity {

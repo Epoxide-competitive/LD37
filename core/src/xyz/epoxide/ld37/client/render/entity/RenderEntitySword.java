@@ -1,15 +1,11 @@
 package xyz.epoxide.ld37.client.render.entity;
 
-import static xyz.epoxide.ld37.client.render.RenderManager.SCALE_HEIGHT;
-import static xyz.epoxide.ld37.client.render.RenderManager.SCALE_WIDTH;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import xyz.epoxide.ld37.LD37;
 import xyz.epoxide.ld37.entity.Entity;
 import xyz.epoxide.ld37.entity.EntitySword;
-import xyz.epoxide.ld37.utils.Direction;
 
 public class RenderEntitySword extends RenderEntity {
     
@@ -19,7 +15,7 @@ public class RenderEntitySword extends RenderEntity {
     @Override
     public void render (SpriteBatch batch, Entity entity, int x, int y, float delta) {
     	float baseU = 0.0f/256.0f;
-    	float baseV = 48.0f/256.0f+16.0f*(float)(entity.getAnimationStage())/256.0f;
+    	float baseV = 48.0f/256.0f+16.0f*(entity.getAnimationStage())/256.0f;
     	
     	float rx = Gdx.graphics.getWidth() / 2 - 1.0f*LD37.tileWidth;
     	float ry = Gdx.graphics.getHeight() / 2;

@@ -1,14 +1,11 @@
 package xyz.epoxide.ld37.client.render.entity;
 
-import static xyz.epoxide.ld37.client.render.RenderManager.SCALE_HEIGHT;
-import static xyz.epoxide.ld37.client.render.RenderManager.SCALE_WIDTH;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import xyz.epoxide.ld37.LD37;
 import xyz.epoxide.ld37.entity.Entity;
-import xyz.epoxide.ld37.utils.Direction;
+import xyz.epoxide.ld37.entity.EntityPlayer;
 
 public class RenderEntityPlayer extends RenderEntity {
     
@@ -24,11 +21,11 @@ public class RenderEntityPlayer extends RenderEntity {
     		baseV = 0;
     	}
     	if (entity.getAnimationType() == 1){
-    		baseU = (16.0f*(float)((entity.getAnimationStage()/2) % 4))/256.0f;
+    		baseU = (16.0f*((entity.getAnimationStage()/2) % 4))/256.0f;
     		baseV = 16.0f/256.0f;
     	}
     	if (entity.getAnimationType() == 2){
-    		baseU = (16.0f*(float)((entity.getAnimationStage()) % 8))/256.0f;
+    		baseU = (16.0f*((entity.getAnimationStage()) % 8))/256.0f;
     		baseV = 32.0f/256.0f;
     	}
     	if (entity.getAnimationType() == 3){
@@ -54,12 +51,13 @@ public class RenderEntityPlayer extends RenderEntity {
     	if (entity.getY()*LD37.tileWidth > entity.getWorld().getMapHeight()*LD37.tileWidth-Gdx.graphics.getHeight()/2){
     		ry = (entity.getY())*LD37.tileWidth-(entity.getWorld().getMapHeight()*LD37.tileWidth-Gdx.graphics.getHeight());
     	}
-    	
-        if (entity.getDirection().x == -1){
-        	batch.draw(PLAYER_TEXTURE, (int)rx, (int)ry, 2.0f*LD37.tileWidth, 2.0f*LD37.tileWidth, baseU+0.0625f, baseV+0.0625f, baseU, baseV);
-        }
-        else {
-        	batch.draw(PLAYER_TEXTURE, (int)rx + 2.0f*LD37.tileWidth, (int)ry, -2.0f*LD37.tileWidth, 2.0f*LD37.tileWidth, baseU+0.0625f, baseV+0.0625f, baseU, baseV);
-        }
+    	if (((EntityPlayer)entity).deathTimer == 0){
+	        if (entity.getDirection().x == -1){
+	        	batch.draw(PLAYER_TEXTURE, (int)rx, (int)ry, 2.0f*LD37.tileWidth, 2.0f*LD37.tileWidth, baseU+0.0625f, baseV+0.0625f, baseU, baseV);
+	        }
+	        else {
+	        	batch.draw(PLAYER_TEXTURE, (int)rx + 2.0f*LD37.tileWidth, (int)ry, -2.0f*LD37.tileWidth, 2.0f*LD37.tileWidth, baseU+0.0625f, baseV+0.0625f, baseU, baseV);
+	        }
+    	}
     }
 }

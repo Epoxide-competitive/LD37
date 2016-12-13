@@ -5,8 +5,9 @@ import xyz.epoxide.ld37.world.World;
 
 public class EntityLiving extends Entity {
     
-    private float maxHealth;
-    private float health;
+    protected float maxHealth;
+    protected float health;
+    public float damageTimer = 0;
     
     public EntityLiving(World world) {
         
@@ -34,10 +35,11 @@ public class EntityLiving extends Entity {
     }
     
     public void attack (CombatSource source) {
-        if (source.getSource() != null){
+        if (source.getSource() != null && damageTimer == 0){
         	this.addMotionY(5.0f);
         	float sign = Math.signum(source.getSource().getX()-getX());
         	this.setMotionX(-6.0f*sign);
+        	this.damageTimer = 1.0f;
         }
     	
         this.health = Math.min(this.getHealth() - source.getAmount(), this.getMaxHealth());
@@ -51,5 +53,16 @@ public class EntityLiving extends Entity {
     public void heal (CombatSource source) {
         
         this.health = Math.min(this.getHealth() + source.getAmount(), this.getMaxHealth());
+    }
+    
+    @Override
+    public void onUpdate(float delta){
+    	super.onUpdate(delta);
+    	if (this.damageTimer > 0){
+    		this.damageTimer -= delta;
+    		if (this.damageTimer <= 0){
+    			this.damageTimer = 0;
+    		}
+    	}
     }
 }

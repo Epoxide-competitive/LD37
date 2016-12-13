@@ -24,10 +24,9 @@ public class KeyBind extends Registerable<KeyBind> {
     
     public static final KeyBind SPACE = registerKeyBind("space", new KeyJump(Input.Keys.SPACE));
     public static final KeyBind Z = registerKeyBind("z", new KeyJump(Input.Keys.Z));
+    public static final KeyBind J = registerKeyBind("j", new KeyJump(Input.Keys.J));
     public static final KeyBind X = registerKeyBind("x", new KeySword(Input.Keys.X));
-    public static final KeyBind J = registerKeyBind("j", new KeySword(Input.Keys.J));
-
-    public static final KeyBind V = registerKeyBind("v", new KeyDebug(Input.Keys.V));
+    public static final KeyBind K = registerKeyBind("k", new KeySword(Input.Keys.K));
     
     private int keycode;
     

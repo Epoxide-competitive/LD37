@@ -1,6 +1,5 @@
 package xyz.epoxide.ld37.client.render;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -25,6 +24,7 @@ public class RenderManager {
     public static float SCALE_HEIGHT;
     
     private final Texture TILE_TEXTURE;
+    private final Texture BACKGROUND_TEXTURE;
     
     public final Texture PLAYER_TEXTURE;
     
@@ -39,6 +39,7 @@ public class RenderManager {
 		}
         this.TILE_TEXTURE = new Texture("assets/ld37/textures/tile/tiles.png");
         this.PLAYER_TEXTURE = new Texture("assets/ld37/textures/char/char.png");
+        this.BACKGROUND_TEXTURE = new Texture("assets/ld37/textures/background_square.png");
     }
     
     public enum TileLayer {
@@ -48,6 +49,16 @@ public class RenderManager {
     public void renderGame (SpriteBatch batch, float delta) {
         
         World world = LD37.INSTANCE.world;
+        
+        batch.begin();
+        if (LD37.worldX < 11){
+        	batch.setColor(128, 255, 255, 255);
+        }
+        else {
+        	batch.setColor(0, 0, 0, 0);
+        }
+    	batch.draw(BACKGROUND_TEXTURE, 0, 0, LD37.INSTANCE.world.getBackgroundWidth()*LD37.tileWidth, LD37.INSTANCE.world.getBackgroundHeight()*LD37.tileWidth, 0,0,1,1);
+        batch.end();
         renderTiles(batch, world, world.getBackgroundTileMap(), delta, TileLayer.LAYER_BACKGROUND);
         renderEntity(batch, world.getEntities(), delta);
         renderTiles(batch, world, world.getTileMap(), delta, TileLayer.LAYER_WORLD);
@@ -65,14 +76,19 @@ public class RenderManager {
         	else {
         		batch.draw(PLAYER_TEXTURE, 1.0f*(LD37.tileWidth/8.0f)+((i-1)*7.0f+9.0f)*(LD37.tileWidth/8.0f), Gdx.graphics.getHeight()-11.0f*(LD37.tileWidth/8.0f), 7.0f*(LD37.tileWidth/8.0f), 10.0f*(LD37.tileWidth/8.0f), 89.0f/256.0f, 0.0f/256.0f, 96.0f/256.0f, 10.0f/256.0f);
             }
-        	if (i > LD37.INSTANCE.entityPlayer.getHealth()){
+        	if (i >= LD37.INSTANCE.entityPlayer.getHealth()){
         		batch.draw(PLAYER_TEXTURE, 1.0f*(LD37.tileWidth/8.0f)+((i-1)*7.0f+9.0f)*(LD37.tileWidth/8.0f), Gdx.graphics.getHeight()-9.0f*(LD37.tileWidth/8.0f), 6.0f*(LD37.tileWidth/8.0f), 6.0f*(LD37.tileWidth/8.0f), 70.0f/256.0f, 10.0f/256.0f, 76.0f/256.0f, 16.0f/256.0f);
             }
         	else {
         		batch.draw(PLAYER_TEXTURE, 1.0f*(LD37.tileWidth/8.0f)+((i-1)*7.0f+9.0f)*(LD37.tileWidth/8.0f), Gdx.graphics.getHeight()-9.0f*(LD37.tileWidth/8.0f), 6.0f*(LD37.tileWidth/8.0f), 6.0f*(LD37.tileWidth/8.0f), 64.0f/256.0f, 10.0f/256.0f, 70.0f/256.0f, 16.0f/256.0f);
             }
         }
-        batch.end();
+    	if (LD37.INSTANCE.entityPlayer.deathTimer > 0){
+        	batch.setColor(1, 1, 1, 1);
+        	batch.draw(PLAYER_TEXTURE, (Gdx.graphics.getWidth()/2)-4.0f*LD37.tileWidth, (Gdx.graphics.getHeight()/2)-3.0f*LD37.tileWidth, 8.0f*LD37.tileWidth, 6.0f*LD37.tileWidth, 128, 0, 192, 48);
+        	batch.setColor(1, 1, 1, 1);
+    	}
+    	batch.end();
     }
     
     private void renderTiles (SpriteBatch batch, World world, Tile[][] tileMap, float delta, TileLayer layer) {
@@ -102,7 +118,7 @@ public class RenderManager {
         	for (int j = 0; j < tileMap[i].length; j ++){
                 Tile t = tileMap[i][j];
                 if (t != Tile.VOID){
-                    batch.draw(TILE_TEXTURE, ((float)i*LD37.tileWidth)-x, ((float)j*LD37.tileWidth)-y, LD37.tileWidth, LD37.tileWidth, t.u2, t.v2, t.u, t.v);
+                    batch.draw(TILE_TEXTURE, (i*LD37.tileWidth)-x, (j*LD37.tileWidth)-y, LD37.tileWidth, LD37.tileWidth, t.u2, t.v2, t.u, t.v);
                 }
             }
         }
