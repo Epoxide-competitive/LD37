@@ -36,7 +36,7 @@ public class LD37 extends ApplicationAdapter {
     public static final String ID = "ld37";
     
     
-    private static double STEP = 1d / 120d;
+    private static double STEP = 1d / 6w0d;
     private static double prevTime;
     private static double accumulator = 0;
     
