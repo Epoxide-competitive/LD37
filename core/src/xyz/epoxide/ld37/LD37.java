@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import xyz.epoxide.ld37.client.render.RenderManager;
 import xyz.epoxide.ld37.entity.EntityPlayer;
@@ -33,6 +34,11 @@ public class LD37 extends ApplicationAdapter {
     public World world;
     
     public static final String ID = "ld37";
+    
+    
+    private static double STEP = 1d / 120d;
+    private static double prevTime;
+    private static double accumulator = 0;
     
     @Override
     public void create () {
@@ -62,9 +68,19 @@ public class LD37 extends ApplicationAdapter {
     @Override
     public void render () {
         
-        final float delta = Gdx.graphics.getDeltaTime();
-        // TODO Setup Limited Updates
-		this.update(delta);
+        double currentTime = TimeUtils.millis() / 1000.0;
+        double frameTime = Math.min(currentTime - prevTime, 0.25);
+        final float delta = (float) frameTime;
+        
+        prevTime = currentTime;
+        accumulator += frameTime;
+        
+        while (accumulator >= STEP) {
+            
+            accumulator -= STEP;
+            update(delta);
+        }
+        
         // TODO Setup launch which are asset loading
         // TODO Setup Gui Rendering
         
