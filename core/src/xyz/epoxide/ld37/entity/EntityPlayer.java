@@ -4,6 +4,7 @@ import xyz.epoxide.ld37.LD37;
 import xyz.epoxide.ld37.input.keybind.KeyBind;
 import xyz.epoxide.ld37.input.keybind.KeyJump;
 import xyz.epoxide.ld37.util.CombatSource;
+import xyz.epoxide.ld37.util.CombatSource.Type;
 import xyz.epoxide.ld37.world.World;
 
 public class EntityPlayer extends EntityLiving {
@@ -24,6 +25,7 @@ public class EntityPlayer extends EntityLiving {
     
     @Override
     public void onUpdate (float delta) {
+    	
     	if (this.deathTimer <= 0){
     		super.onUpdate(delta);
     		if (hasExtraHealth){

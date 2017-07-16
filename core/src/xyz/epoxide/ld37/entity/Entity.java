@@ -2,8 +2,9 @@ package xyz.epoxide.ld37.entity;
 
 import java.util.Random;
 
-import xyz.epoxide.commons.registry.Identifier;
-import xyz.epoxide.commons.registry.NamedRegistry;
+import org.epoxide.commons.registry.Identifier;
+import org.epoxide.commons.registry.NamedRegistry;
+
 import xyz.epoxide.ld37.LD37;
 import xyz.epoxide.ld37.tile.Tile;
 import xyz.epoxide.ld37.util.CombatSource;

@@ -1,8 +1,9 @@
 package xyz.epoxide.ld37.item;
 
-import xyz.epoxide.commons.registry.Identifier;
-import xyz.epoxide.commons.registry.NamedRegistry;
-import xyz.epoxide.commons.registry.IRegisterable.Registerable;
+import org.epoxide.commons.registry.Identifier;
+import org.epoxide.commons.registry.NamedRegistry;
+import org.epoxide.commons.registry.Registerable;
+
 import xyz.epoxide.ld37.LD37;
 
 public class Item  extends Registerable<Item> {

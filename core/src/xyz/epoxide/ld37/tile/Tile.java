@@ -1,9 +1,10 @@
 package xyz.epoxide.ld37.tile;
 
-import xyz.epoxide.commons.collections.BiMap;
-import xyz.epoxide.commons.registry.IRegisterable.Registerable;
-import xyz.epoxide.commons.registry.Identifier;
-import xyz.epoxide.commons.registry.NamedRegistry;
+import org.epoxide.commons.collections.BiMap;
+import org.epoxide.commons.registry.Identifier;
+import org.epoxide.commons.registry.NamedRegistry;
+import org.epoxide.commons.registry.Registerable;
+
 import xyz.epoxide.ld37.LD37;
 import xyz.epoxide.ld37.utils.Box;
 import xyz.epoxide.ld37.world.World;
